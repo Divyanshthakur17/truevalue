@@ -5,8 +5,16 @@ from .models import NewCars, UsedCars
 
 # Create your views here.
 def NewCarViews(request):
-    page_number = request.GET.get('page', 1)
+    # for sort filter
+    ordering = request.GET.get('ordering', "")
     cars = NewCars.objects.all()
+    
+    if ordering:
+        cars = cars.order_by(ordering)
+
+    # for pagination
+    page_number = request.GET.get('page', 1)
+    
     p = Paginator(cars,2)
     page_number = request.GET.get('page')
     try:
@@ -21,8 +29,14 @@ def NewCarViews(request):
     return render(request, "base/newcars.html", context)
 
 def UsedCarViews(request):
-    page_number = request.GET.get('page', 1)
+    # for sort filter
+    ordering = request.GET.get('ordering', "")
     cars = UsedCars.objects.all()
+    if ordering:
+        cars = cars.order_by(ordering)
+        
+    page_number = request.GET.get('page', 1)
+    
     p = Paginator(cars,3)
     page_number = request.GET.get('page')
     try:

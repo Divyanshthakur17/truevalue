@@ -17,7 +17,7 @@
                 <div class="search-form">
                     <h4><span class="glyphicon glyphicon-search"></span> Search for</h4>
                     <form action="#" method="post">
-                        <input type="text" class="form-control" placeholder="Search of Properties">
+                        <input type="text" class="form-control" placeholder="Search of Car">
                         <div class="row">
                             <div class="col-lg-5">
                                 <select class="form-control">
@@ -53,13 +53,13 @@
             <div class="col-lg-9 col-sm-8">
                 <div class="sortby clearfix">
                     <div class="pull-right">
-                        <form action="#" method="post">
-                            <select class="form-control" id = 'demo' onclick="displayDate()">
-                                <option>Sort by</option>
-                                <option>Price: Low to High</option>
-                                <option><a href="{% url 'highlow' %}">Price: High to Low</a> </option>
-                            </select>
-                        </form>
+                        <select name="sort" class="form-control" id="sort-list" onchange="location = finalurl();" style="margin-left: auto;">
+                            <option value="" id="placeholder" disabled selected hidden>Sort</option>
+                            <option id="exshowroom_price" value="exshowroom_price">Price: Low To High</option>
+                            <option id="-exshowroom_price" value="-exshowroom_price">Price: High To Low</option>
+                            <option id="product_name" value="product_name">Car Name</option>
+                            <option id="-date_added" value="-date_added">What's New</option>
+                        </select>
                     </div>
                 </div>
                 <div class="row">
@@ -97,9 +97,23 @@
     </span>
   </div>
   <script>
-   let data= document.getElementById("demo"); 
-   function displayDate(){
-      alert("Hello! I am an alert box!!");
-   }
+
+    function get(name) {
+        if (name = (new RegExp('[?&]' + encodeURIComponent(name) + '=([^&]*)')).exec(location.search))  //location.search give query sling part
+            return decodeURIComponent(name[1]);
+    }
+
+    if(get('ordering'))
+    document.getElementById('placeholder').innerHTML = "Sort: " + document.getElementById(get('ordering')).innerHTML;
+    
+
+    function finalurl() {
+        var url = new URL(window.location.href);
+        var search_params = url.searchParams;
+        search_params.set('ordering', document.getElementById("sort-list").value);
+        url.search = search_params.toString();
+        var new_url = url.toString();
+        return new_url
+    }
   </script>
 {% endblock %}

@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 # Create your models here.
 
@@ -50,6 +51,10 @@ class NewCars(models.Model):
     exshowroom_price = models.IntegerField()
     onroad_price = models.IntegerField()
     car_detail = models.TextField(blank=True, null=True)
+    date_added = models.DateTimeField(default=timezone.now)
+
+    # class Meta:
+        # ordering = ['-exshowroom_price']
     
     
 
