@@ -20,29 +20,32 @@
                         <input type="text" class="form-control" placeholder="Search of Car">
                         <div class="row">
                             <div class="col-lg-5">
-                                <select class="form-control">
-                                    <option>Buy</option>
-                                    <option>Rent</option>
-                                    <option>Sale</option>
+                                <select name="milege" class="form-control" id="milege" onchange="location = finalurl4();" style="margin-left: auto;">
+                                    <option value="" id="price-placeholder" disabled selected hidden>Price</option>
+                                    <option id="ml10" value="15">less than 15</option>
+                                    <option id="ml15" value="20">less than 20</option>
+                                    <option id="ml2o" value="25">less than 25</option>
                                 </select>
+                                
                             </div>
                             <div class="col-lg-7">
-                                <select class="form-control">
-                                    <option>Price</option>
-                                    <option>$150,000 - $200,000</option>
-                                    <option>$200,000 - $250,000</option>
-                                    <option>$250,000 - $300,000</option>
-                                    <option>$300,000 - above</option>
+                                <select name="exshowroom_price" class="form-control" id="price-list" onchange="location = finalurl2();" style="margin-left: auto;">
+                                    <option value="" id="price-placeholder" disabled selected hidden>Price</option>
+                                    <option id="pr5Lakh" value="500000">less than 5Lakh</option>
+                                    <option id="pr10Lakh" value="1000000">less than 10Lakh</option>
+                                    <option id="pr20Lakh" value="2000000">less than 20Lakh</option>
+                                    <option id="pr50Lakh" value="5000000">less than 50Lakh</option>
                                 </select>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-12">
-                                <select class="form-control">
-                                    <option>Property Type</option>
-                                    <option>Apartment</option>
-                                    <option>Building</option>
-                                    <option>Office Space</option>
+                                <select name="sort" class="form-control" id="body-type" onchange="location = finalurl3();" style="margin-left: auto;">
+                                    <option value="" id="placeholder" disabled selected hidden>Body Type</option>
+                                    <option id="sedan" value="sedan">Sedan</option>
+                                    <option id="SUV" value="SUV">SUV</option>
+                                    <option id="Coupe" value="coupe">Coupe</option>
+                                    <option id="Convertible" value="MUV">MUV</option>
                                 </select>
                             </div>
                         </div>
@@ -72,7 +75,7 @@
                             </div>
                             <h4><a href="property-detail.html">{{car.brand}}</a></h4>
                             <h2 style="font-size: small;">{{car.model}}</h2>
-                            <p class="price">{{car.demand}}</p>
+                            <p class="price">{{car.exshowroom_price}}</p>
 
                             <a class="btn btn-primary" href="{% url 'details' car.id %}">View Details</a>
                         </div>
@@ -111,6 +114,34 @@
         var url = new URL(window.location.href);
         var search_params = url.searchParams;
         search_params.set('ordering', document.getElementById("sort-list").value);
+        url.search = search_params.toString();
+        var new_url = url.toString();
+        return new_url
+    }
+
+    // for getting url after applying price filtering
+    function finalurl2() {
+        var url = new URL(window.location.href);
+        var search_params = url.searchParams;
+        search_params.set('exshowroom_price', document.getElementById("price-list").value);
+        url.search = search_params.toString();
+        var new_url = url.toString();
+        return new_url
+    }
+
+    function finalurl3() {
+        var url = new URL(window.location.href);
+        var search_params = url.searchParams;
+        search_params.set('body_type', document.getElementById("body-type").value);
+        url.search = search_params.toString();
+        var new_url = url.toString();
+        return new_url
+    }
+
+    function finalurl4() {
+        var url = new URL(window.location.href);
+        var search_params = url.searchParams;
+        search_params.set('milege', document.getElementById("milege").value);
         url.search = search_params.toString();
         var new_url = url.toString();
         return new_url

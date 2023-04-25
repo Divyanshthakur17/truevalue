@@ -20,30 +20,38 @@
                         <input type="text" class="form-control" placeholder="Search of Properties">
                         <div class="row">
                             <div class="col-lg-5">
-                                <select class="form-control">
-                                    <option>Buy</option>
-                                    <option>Rent</option>
-                                    <option>Sale</option>
+                                <select name="buy year" class="form-control" id="buy-year" onchange="location = finalurl4();" style="margin-left: auto;">
+                                    <option value="" id="price-placeholder" disabled selected hidden>Buy Year</option>
+                                    <option id="ml10" value="2015">2015</option>
+                                    <option id="ml15" value="2016">2016</option>
+                                    <option id="ml2o" value="2017">2017</option>
+                                    <option id="ml2o" value="2018">2018</option>
+                                    <option id="ml2o" value="2019">2019</option>
+                                    <option id="ml2o" value="2020">2020</option>
+                                    <option id="ml2o" value="2021">2021</option>
+                                    <option id="ml2o" value="2022">2022</option>
+                                    <option id="ml2o" value="2023">2023</option>
                                 </select>
                             </div>
                             <div class="col-lg-7">
-                                <select class="form-control">
-                                    <option>Price</option>
-                                    <option>$150,000 - $200,000</option>
-                                    <option>$200,000 - $250,000</option>
-                                    <option>$250,000 - $300,000</option>
-                                    <option>$300,000 - above</option>
+                                <select name="price" class="form-control" id="price-list" onchange="location = finalurl2();" style="margin-left: auto;">
+                                    <option value="" id="price-placeholder" disabled selected hidden>Price</option>
+                                    <option id="pr5Lakh" value="500000">less than 5Lakh</option>
+                                    <option id="pr10Lakh" value="1000000">less than 10Lakh</option>
+                                    <option id="pr20Lakh" value="2000000">less than 20Lakh</option>
+                                    <option id="pr50Lakh" value="5000000">less than 50Lakh</option>
                                 </select>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-12">
-                                <select class="form-control">
-                                    <option>Property Type</option>
-                                    <option>Apartment</option>
-                                    <option>Building</option>
-                                    <option>Office Space</option>
-                                </select>
+                                <select name="Kilometer" class="form-control" id="km-run" onchange="location = finalurl3();" style="margin-left: auto;">
+                                    <option value="" id="placeholder" disabled selected hidden>Kilometer Run</option>
+                                    <option id="demand" value="50000">less than 50000</option>
+                                    <option id="-demand" value="100000">less than 100000</option>
+                                    <option id="product_name" value="200000">less than 200000</option>
+                                    <option id="-date_added" value="500000">less than 500000</option>
+                                </select>    
                             </div>
                         </div>
                         <button class="btn btn-primary">Find Now</button>
@@ -56,8 +64,8 @@
                         <form action="#" method="post">
                             <select name="sort" class="form-control" id="sort-list" onchange="location = finalurl();" style="margin-left: auto;">
                                 <option value="" id="placeholder" disabled selected hidden>Sort</option>
-                                <option id="price" value="demand">Price: Low To High</option>
-                                <option id="-price" value="-demand">Price: High To Low</option>
+                                <option id="demand" value="demand">Price: Low To High</option>
+                                <option id="-demand" value="-demand">Price: High To Low</option>
                                 <option id="product_name" value="product_name">Car Name</option>
                                 <option id="-date_added" value="-date_added">What's New</option>
                             </select>
@@ -107,7 +115,7 @@
 
     if(get('ordering'))
     document.getElementById('placeholder').innerHTML = "Sort: " + document.getElementById(get('ordering')).innerHTML;
-    xshowroom_price
+    
     if(get('price'))
     document.getElementById('price-placeholder').innerHTML = "Price: " + document.getElementById('pr'+get('exshowroom_price')).innerHTML;
 
@@ -115,6 +123,34 @@
         var url = new URL(window.location.href);
         var search_params = url.searchParams;
         search_params.set('ordering', document.getElementById("sort-list").value);
+        url.search = search_params.toString();
+        var new_url = url.toString();
+        return new_url
+    }
+
+    // for getting url after applying price filtering
+    function finalurl2() {
+        var url = new URL(window.location.href);
+        var search_params = url.searchParams;
+        search_params.set('price', document.getElementById("price-list").value);
+        url.search = search_params.toString();
+        var new_url = url.toString();
+        return new_url
+    }
+
+    function finalurl3() {
+        var url = new URL(window.location.href);
+        var search_params = url.searchParams;
+        search_params.set('kilometer_run', document.getElementById("km-run").value);
+        url.search = search_params.toString();
+        var new_url = url.toString();
+        return new_url
+    }
+
+    function finalurl4() {
+        var url = new URL(window.location.href);
+        var search_params = url.searchParams;
+        search_params.set('buy_year', document.getElementById("buy-year").value);
         url.search = search_params.toString();
         var new_url = url.toString();
         return new_url
