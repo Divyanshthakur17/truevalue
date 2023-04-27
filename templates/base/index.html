@@ -7,7 +7,7 @@
     <div class="sl-slider">
       <div class="sl-slide" data-orientation="horizontal" data-slice1-rotation="-25" data-slice2-rotation="-25" data-slice1-scale="2" data-slice2-scale="2">
         <div class="sl-slide-inner">
-          <div class="bg-img bg-img-1"></div>
+          <div><img src="{% static 'assets/images/a.jpg' %}"width="1800px" height="600px" style="object-fit: cover; z-index: -1;" alt=""></div>
           <h2><a href="https://www.free-css.com/free-css-templates">2 Bed Rooms and 1 Dinning Room Aparment on Sale</a></h2>
           <blockquote>
             <p class="location"><span class="glyphicon glyphicon-map-marker"></span> 1890 Syndey, Australia</p>
@@ -17,7 +17,7 @@
       </div>
       <div class="sl-slide" data-orientation="vertical" data-slice1-rotation="10" data-slice2-rotation="-15" data-slice1-scale="1.5" data-slice2-scale="1.5">
         <div class="sl-slide-inner">
-          <div class="bg-img bg-img-2"></div>
+          <div><img src="{% static 'assets/images/b.jpg' %}" width="1800px" height="600px" style="object-fit: cover;" alt=""></div>
           <h2><a href="https://www.free-css.com/free-css-templates">2 Bed Rooms and 1 Dinning Room Aparment on Sale</a></h2>
           <blockquote>
             <p class="location"><span class="glyphicon glyphicon-map-marker"></span> 1890 Syndey, Australia</p>
@@ -27,7 +27,7 @@
       </div>
       <div class="sl-slide" data-orientation="horizontal" data-slice1-rotation="3" data-slice2-rotation="3" data-slice1-scale="2" data-slice2-scale="1">
         <div class="sl-slide-inner">
-          <div class="bg-img bg-img-3"></div>
+          <div><img src="{% static 'assets/images/c.jpg' %}" width="1800px" height="600px" style="object-fit: cover;" alt=""></div>
           <h2><a href="https://www.free-css.com/free-css-templates">2 Bed Rooms and 1 Dinning Room Aparment on Sale</a></h2>
           <blockquote>
             <p class="location"><span class="glyphicon glyphicon-map-marker"></span> 1890 Syndey, Australia</p>
@@ -37,7 +37,7 @@
       </div>
       <div class="sl-slide" data-orientation="vertical" data-slice1-rotation="-5" data-slice2-rotation="25" data-slice1-scale="2" data-slice2-scale="1">
         <div class="sl-slide-inner">
-          <div class="bg-img bg-img-4"></div>
+          <div><img src="{% static 'assets/images/d.jpg' %}" width="1800px" height="600px" style="object-fit: cover;" alt=""></div>
           <h2><a href="https://www.free-css.com/free-css-templates">2 Bed Rooms and 1 Dinning Room Aparment on Sale</a></h2>
           <blockquote>
             <p class="location"><span class="glyphicon glyphicon-map-marker"></span> 1890 Syndey, Australia</p>
@@ -47,7 +47,7 @@
       </div>
       <div class="sl-slide" data-orientation="horizontal" data-slice1-rotation="-5" data-slice2-rotation="10" data-slice1-scale="2" data-slice2-scale="1">
         <div class="sl-slide-inner">
-          <div class="bg-img bg-img-5"></div>
+          <div><img src="{% static 'assets/images/e.jpg' %}" width="1800px" height="600px" style="object-fit: cover;" alt=""></div>
           <h2><a href="https://www.free-css.com/free-css-templates">2 Bed Rooms and 1 Dinning Room Aparment on Sale</a></h2>
           <blockquote>
             <p class="location"><span class="glyphicon glyphicon-map-marker"></span> 1890 Syndey, Australia</p>
@@ -98,102 +98,75 @@
             </div>
           </form>
         </div>
+        {% if user.is_authenticated %}
+        <div class="col-lg-5 col-lg-offset-1 col-sm-6">
+          <p>Welcome {{user.first_name}} thanks for visiting.</p>
+          <button class="btn btn-info"> <a href="{% url 'newcars'%}">Explore Cars</a> </button>
+        </div>
+        {% else %}
         <div class="col-lg-5 col-lg-offset-1 col-sm-6">
           <p>Join now and get updated with all the properties deals.</p>
           <button class="btn btn-info" data-toggle="modal" data-target="#loginpop">Login</button>
         </div>
+        {% endif %}
       </div>
     </div>
   </div>
 </div>
 <div class="container">
-  <div class="properties-listing spacer"><a href="buysalerent.html" class="pull-right viewall">View All Listing</a>
-    <h2>Featured Properties</h2>
-    <div id="owl-example" class="owl-carousel">
+  <div class="new-cars spacer">
+    <a href="{% url 'newcars' %}" class="pull-right viewall">View All Listing</a>
+    <h2>Featured New Cars</h2>
+    <div id="owl-example" class="owl-carousel" >
+      {% for car in cars %}
       <div class="properties">
-        <div class="image-holder"><img src="assets/images/properties/1.jpg" class="img-responsive" alt="website template image">
+        <div class="image-holder"><img src="/media/{{car.image_1}}" style=" width: 230; height: 130px;  object-fit: cover;" class="img-responsive"
+            alt="website template image">
           <div class="status sold">Sold</div>
         </div>
-        <h4><a href="property-detail.html">Royal Inn</a></h4>
-        <p class="price">Price: $234,900</p>
-        <div class="listing-detail"><span data-toggle="tooltip" data-placement="bottom" data-original-title="Bed Room">5</span> <span data-toggle="tooltip" data-placement="bottom" data-original-title="Living Room">2</span> <span data-toggle="tooltip" data-placement="bottom" data-original-title="Parking">2</span> <span data-toggle="tooltip" data-placement="bottom" data-original-title="Kitchen">1</span></div>
-        <a class="btn btn-primary" href="property-detail.html">View Details</a></div>
-      <div class="properties">
-        <div class="image-holder"><img src="assets/images/properties/2.jpg" class="img-responsive" alt="website template image">
-          <div class="status new">New</div>
-        </div>
-        <h4><a href="property-detail.html">Royal Inn</a></h4>
-        <p class="price">Price: $234,900</p>
-        <div class="listing-detail"><span data-toggle="tooltip" data-placement="bottom" data-original-title="Bed Room">5</span> <span data-toggle="tooltip" data-placement="bottom" data-original-title="Living Room">2</span> <span data-toggle="tooltip" data-placement="bottom" data-original-title="Parking">2</span> <span data-toggle="tooltip" data-placement="bottom" data-original-title="Kitchen">1</span></div>
-        <a class="btn btn-primary" href="property-detail.html">View Details</a></div>
-      <div class="properties">
-        <div class="image-holder"><img src="assets/images/properties/3.jpg" class="img-responsive" alt="website template image"></div>
-        <h4><a href="property-detail.html">Royal Inn</a></h4>
-        <p class="price">Price: $234,900</p>
-        <div class="listing-detail"><span data-toggle="tooltip" data-placement="bottom" data-original-title="Bed Room">5</span> <span data-toggle="tooltip" data-placement="bottom" data-original-title="Living Room">2</span> <span data-toggle="tooltip" data-placement="bottom" data-original-title="Parking">2</span> <span data-toggle="tooltip" data-placement="bottom" data-original-title="Kitchen">1</span></div>
-        <a class="btn btn-primary" href="property-detail.html">View Details</a></div>
-      <div class="properties">
-        <div class="image-holder"><img src="assets/images/properties/4.jpg" class="img-responsive" alt="website template image"></div>
-        <h4><a href="property-detail.html">Royal Inn</a></h4>
-        <p class="price">Price: $234,900</p>
-        <div class="listing-detail"><span data-toggle="tooltip" data-placement="bottom" data-original-title="Bed Room">5</span> <span data-toggle="tooltip" data-placement="bottom" data-original-title="Living Room">2</span> <span data-toggle="tooltip" data-placement="bottom" data-original-title="Parking">2</span> <span data-toggle="tooltip" data-placement="bottom" data-original-title="Kitchen">1</span></div>
-        <a class="btn btn-primary" href="property-detail.html">View Details</a></div>
-      <div class="properties">
-        <div class="image-holder"><img src="assets/images/properties/1.jpg" class="img-responsive" alt="website template image">
-          <div class="status sold">Sold</div>
-        </div>
-        <h4><a href="property-detail.html">Royal Inn</a></h4>
-        <p class="price">Price: $234,900</p>
-        <div class="listing-detail"><span data-toggle="tooltip" data-placement="bottom" data-original-title="Bed Room">5</span> <span data-toggle="tooltip" data-placement="bottom" data-original-title="Living Room">2</span> <span data-toggle="tooltip" data-placement="bottom" data-original-title="Parking">2</span> <span data-toggle="tooltip" data-placement="bottom" data-original-title="Kitchen">1</span></div>
-        <a class="btn btn-primary" href="property-detail.html">View Details</a></div>
-      <div class="properties">
-        <div class="image-holder"><img src="assets/images/properties/2.jpg" class="img-responsive" alt="website template image">
-          <div class="status sold">Sold</div>
-        </div>
-        <h4><a href="property-detail.html">Royal Inn</a></h4>
-        <p class="price">Price: $234,900</p>
-        <div class="listing-detail"><span data-toggle="tooltip" data-placement="bottom" data-original-title="Bed Room">5</span> <span data-toggle="tooltip" data-placement="bottom" data-original-title="Living Room">2</span> <span data-toggle="tooltip" data-placement="bottom" data-original-title="Parking">2</span> <span data-toggle="tooltip" data-placement="bottom" data-original-title="Kitchen">1</span></div>
-        <a class="btn btn-primary" href="property-detail.html">View Details</a></div>
-      <div class="properties">
-        <div class="image-holder"><img src="assets/images/properties/3.jpg" class="img-responsive" alt="website template image">
-          <div class="status new">New</div>
-        </div>
-        <h4><a href="property-detail.html">Royal Inn</a></h4>
-        <p class="price">Price: $234,900</p>
-        <div class="listing-detail"><span data-toggle="tooltip" data-placement="bottom" data-original-title="Bed Room">5</span> <span data-toggle="tooltip" data-placement="bottom" data-original-title="Living Room">2</span> <span data-toggle="tooltip" data-placement="bottom" data-original-title="Parking">2</span> <span data-toggle="tooltip" data-placement="bottom" data-original-title="Kitchen">1</span></div>
-        <a class="btn btn-primary" href="property-detail.html">View Details</a></div>
-      <div class="properties">
-        <div class="image-holder"><img src="assets/images/properties/4.jpg" class="img-responsive" alt="website template image"></div>
-        <h4><a href="property-detail.html">Royal Inn</a></h4>
-        <p class="price">Price: $234,900</p>
-        <div class="listing-detail"><span data-toggle="tooltip" data-placement="bottom" data-original-title="Bed Room">5</span> <span data-toggle="tooltip" data-placement="bottom" data-original-title="Living Room">2</span> <span data-toggle="tooltip" data-placement="bottom" data-original-title="Parking">2</span> <span data-toggle="tooltip" data-placement="bottom" data-original-title="Kitchen">1</span></div>
-        <a class="btn btn-primary" href="property-detail.html">View Details</a></div>
-      <div class="properties">
-        <div class="image-holder"><img src="assets/images/properties/1.jpg" class="img-responsive" alt="website template image"></div>
-        <h4><a href="property-detail.html">Royal Inn</a></h4>
-        <p class="price">Price: $234,900</p>
-        <div class="listing-detail"><span data-toggle="tooltip" data-placement="bottom" data-original-title="Bed Room">5</span> <span data-toggle="tooltip" data-placement="bottom" data-original-title="Living Room">2</span> <span data-toggle="tooltip" data-placement="bottom" data-original-title="Parking">2</span> <span data-toggle="tooltip" data-placement="bottom" data-original-title="Kitchen">1</span></div>
-        <a class="btn btn-primary" href="property-detail.html">View Details</a></div>
-      <div class="properties">
-        <div class="image-holder"><img src="assets/images/properties/2.jpg" class="img-responsive" alt="website template image"></div>
-        <h4><a href="property-detail.html">Royal Inn</a></h4>
-        <p class="price">Price: $234,900</p>
-        <div class="listing-detail"><span data-toggle="tooltip" data-placement="bottom" data-original-title="Bed Room">5</span> <span data-toggle="tooltip" data-placement="bottom" data-original-title="Living Room">2</span> <span data-toggle="tooltip" data-placement="bottom" data-original-title="Parking">2</span> <span data-toggle="tooltip" data-placement="bottom" data-original-title="Kitchen">1</span></div>
-        <a class="btn btn-primary" href="property-detail.html">View Details</a></div>
-      <div class="properties">
-        <div class="image-holder"><img src="assets/images/properties/3.jpg" class="img-responsive" alt="website template image"></div>
-        <h4><a href="property-detail.html">Royal Inn</a></h4>
-        <p class="price">Price: $234,900</p>
-        <div class="listing-detail"><span data-toggle="tooltip" data-placement="bottom" data-original-title="Bed Room">5</span> <span data-toggle="tooltip" data-placement="bottom" data-original-title="Living Room">2</span> <span data-toggle="tooltip" data-placement="bottom" data-original-title="Parking">2</span> <span data-toggle="tooltip" data-placement="bottom" data-original-title="Kitchen">1</span></div>
-        <a class="btn btn-primary" href="property-detail.html">View Details</a></div>
+        <h4><a href="property-detail.html">{{car.brand}}</a></h4>
+        <p class="price">Price: {{car.exshowroom_price}}</p>
+        <div class="listing-detail"><span data-toggle="tooltip" data-placement="bottom"
+            data-original-title="Bed Room">5</span> <span data-toggle="tooltip" data-placement="bottom"
+            data-original-title="Living Room">2</span> <span data-toggle="tooltip" data-placement="bottom"
+            data-original-title="Parking">2</span> <span data-toggle="tooltip" data-placement="bottom"
+            data-original-title="Kitchen">1</span></div>
+        <a class="btn btn-primary" href="{% url 'details' car.id %}">View Details</a>
+      </div>
+      {% endfor %}
     </div>
   </div>
+  <div class="used-cars spacer"><a href="{% url 'usedcars' %}" class="pull-right viewall">View All Listing</a>
+    <h2>Featured Used Cars</h2>
+    <div id="owl-example-1" class="owl-carousel">
+      {% for usedcar in usedcars %}
+  
+      <div class="properties">
+        <div class="image-holder"><img src="/media/{{usedcar.image_1}}" style=" width: 230; height: 130px;  object-fit: cover;" class="img-responsive"
+            alt="website template image">
+          <div class="status sold">Sold</div>
+        </div>
+        <h4><a href="property-detail.html">{{usedcar.usedcar_name}}</a></h4>
+        <p class="price">Price: {{usedcar.demand}}</p>
+        <div class="listing-detail"><span data-toggle="tooltip" data-placement="bottom"
+            data-original-title="Bed Room">5</span> <span data-toggle="tooltip" data-placement="bottom"
+            data-original-title="Living Room">2</span> <span data-toggle="tooltip" data-placement="bottom"
+            data-original-title="Parking">2</span> <span data-toggle="tooltip" data-placement="bottom"
+            data-original-title="Kitchen">1</span></div>
+        <a class="btn btn-primary" href="property-detail.html">View Details</a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <br>
+  <br>
+  <br> 
   <div class="spacer">
     <div class="row">
       <div class="col-lg-6 col-sm-9 recent-view">
         <h3>About Us</h3>
-        <p>The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.<br>
-          <a href="about.html">Learn More</a></p>
+        <p>{{about.business_background}}<br>
+          <a href="{% url 'about' %}">Learn More</a></p>
       </div>
       <div class="col-lg-5 col-lg-offset-1 col-sm-3 recommended">
         <h3>Recommended Properties</h3>
@@ -205,16 +178,22 @@
             <li data-target="#myCarousel" data-slide-to="3"></li>
           </ol>
           <div class="carousel-inner">
+            
             <div class="item active">
+              {% for car in cars|slice:":4" %}
               <div class="row">
-                <div class="col-lg-4"><img src="assets/images/properties/1.jpg" class="img-responsive" alt="website template image"></div>
+                
+                <div class="col-lg-4"><img src="/media/{{car.image_1}}" class="img-responsive" alt="website template image"></div>
                 <div class="col-lg-8">
-                  <h5><a href="property-detail.html">Integer sed porta quam</a></h5>
-                  <p class="price">$300,000</p>
-                  <a href="property-detail.html" class="more">More Detail</a></div>
+                  <h5><a href="property-detail.html">{{car.brand}}</a></h5>
+                  <p class="price">{{car.exshowroom_price}}</p>
+                  <a href="{% url 'details' car.id %}" class="more">More Detail</a></div>
+                
               </div>
+              {% endfor %}
             </div>
-            <div class="item">
+            
+            <!-- <div class="item">
               <div class="row">
                 <div class="col-lg-4"><img src="assets/images/properties/2.jpg" class="img-responsive" alt="website template image"></div>
                 <div class="col-lg-8">
@@ -240,7 +219,7 @@
                   <p class="price">$300,000</p>
                   <a href="property-detail.html" class="more">More Detail</a></div>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>

@@ -12,42 +12,17 @@
   <div class="spacer agents">
     <div class="row">
       <div class="col-lg-8  col-lg-offset-2 col-sm-12">
+        {% for agent in agents %}
         <div class="row">
-          <div class="col-lg-2 col-sm-2"><a href="https://www.free-css.com/free-css-templates"><img src="assets/images/agents/1.jpg" class="img-responsive" alt="website template image"></a></div>
+          <div class="col-lg-2 col-sm-2"><a href="https://www.free-css.com/free-css-templates"><img src="/media/{{agent.agent_img}}" class="img-responsive" alt="website template image"></a></div>
           <div class="col-lg-7 col-sm-7">
-            <h4>John Smith</h4>
-            <p>Collaboratively administrate empowered markets via plug-and-play networks. Dynamically procrastinate B2C users after installed base benefits. Dramatically visualize customer directed convergence without revolutionary ROI.</p>
+            <h4>{{agent.agent_name}}</h4>
+            <p>{{agent.agent_desc}}</p>
           </div>
-          <div class="col-lg-3 col-sm-3"><span class="glyphicon glyphicon-envelope"></span> <a href="https://www.free-css.com/free-css-templates">abc@domain.com</a><br>
-            <span class="glyphicon glyphicon-earphone"></span> (9009) 899 889</div>
+          <div class="col-lg-3 col-sm-3"><span class="glyphicon glyphicon-envelope"></span> <a href="https://www.free-css.com/free-css-templates">{{agent.agent_email}}</a><br>
+            <span class="glyphicon glyphicon-earphone"></span> {{agent.agent_phn_no}}</div>
         </div>
-        <div class="row">
-          <div class="col-lg-2 col-sm-2"><a href="https://www.free-css.com/free-css-templates"><img src="assets/images/agents/2.jpg" class="img-responsive" alt="website template image"></a></div>
-          <div class="col-lg-7 col-sm-7">
-            <h4>John Smith</h4>
-            <p>Collaboratively administrate empowered markets via plug-and-play networks. Dynamically procrastinate B2C users after installed base benefits. Dramatically visualize customer directed convergence without revolutionary ROI.</p>
-          </div>
-          <div class="col-lg-3 col-sm-3"><span class="glyphicon glyphicon-envelope"></span> <a href="https://www.free-css.com/free-css-templates">abc@domain.com</a><br>
-            <span class="glyphicon glyphicon-earphone"></span> (9009) 899 889</div>
-        </div>
-        <div class="row">
-          <div class="col-lg-2 col-sm-2"><a href="https://www.free-css.com/free-css-templates"><img src="assets/images/agents/3.jpg" class="img-responsive" alt="website template image"></a></div>
-          <div class="col-lg-7 col-sm-7">
-            <h4>John Smith</h4>
-            <p>Collaboratively administrate empowered markets via plug-and-play networks. Dynamically procrastinate B2C users after installed base benefits. Dramatically visualize customer directed convergence without revolutionary ROI.</p>
-          </div>
-          <div class="col-lg-3 col-sm-3"><span class="glyphicon glyphicon-envelope"></span> <a href="https://www.free-css.com/free-css-templates">abc@domain.com</a><br>
-            <span class="glyphicon glyphicon-earphone"></span> (9009) 899 889</div>
-        </div>
-        <div class="row">
-          <div class="col-lg-2 col-sm-2"><a href="https://www.free-css.com/free-css-templates"><img src="assets/images/agents/4.jpg" class="img-responsive" alt="website template image"></a></div>
-          <div class="col-lg-7 col-sm-7">
-            <h4>John Smith</h4>
-            <p>Collaboratively administrate empowered markets via plug-and-play networks. Dynamically procrastinate B2C users after installed base benefits. Dramatically visualize customer directed convergence without revolutionary ROI.</p>
-          </div>
-          <div class="col-lg-3 col-sm-3"><span class="glyphicon glyphicon-envelope"></span> <a href="https://www.free-css.com/free-css-templates">abc@domain.com</a><br>
-            <span class="glyphicon glyphicon-earphone"></span> (9009) 899 889</div>
-        </div>
+        {% endfor %}
       </div>
     </div>
   </div>

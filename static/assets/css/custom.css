@@ -384,3 +384,14 @@
 	font-size: 3rem;
 	padding-bottom: 30px;
  }
+
+.collapse{
+	margin-top: 0;
+	display: flex;
+	justify-content: space-between;
+	background-color: #000;
+}
+
+.collapse a{
+	color: #999999;
+}

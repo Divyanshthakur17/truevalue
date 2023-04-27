@@ -4,9 +4,9 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'assets/css/custom.css' %}">
 <div class="inside-banner">
-    <div class="container"><span class="pull-right"><a href="https://www.free-css.com/free-css-templates">Home</a> /
-            Buy, Sale &amp; Rent</span>
-        <h2>Buy, Sale &amp; Rent</h2>
+    <div class="container"><span class="pull-right"><a href="{% url 'home' %}">Home</a> /
+            <a href="{% url 'usedcars' %}">reset filters</a></span>
+        <h2>Buy,  &amp; Sale</h2>
     </div>
 </div>
 
@@ -16,60 +16,58 @@
             <div class="col-lg-3 col-sm-4">
                 <div class="search-form">
                     <h4><span class="glyphicon glyphicon-search"></span> Search for</h4>
-                    <form action="#" method="post">
-                        <input type="text" class="form-control" placeholder="Search of Properties">
+                    <form  method="get">
+                        <input type="text" class="form-control" name="usedsearch" placeholder="Search of cars">
                         <div class="row">
                             <div class="col-lg-5">
-                                <select name="buy year" class="form-control" id="buy-year" onchange="location = finalurl4();" style="margin-left: auto;">
-                                    <option value="" id="price-placeholder" disabled selected hidden>Buy Year</option>
-                                    <option id="ml10" value="2015">2015</option>
-                                    <option id="ml15" value="2016">2016</option>
-                                    <option id="ml2o" value="2017">2017</option>
-                                    <option id="ml2o" value="2018">2018</option>
-                                    <option id="ml2o" value="2019">2019</option>
-                                    <option id="ml2o" value="2020">2020</option>
-                                    <option id="ml2o" value="2021">2021</option>
-                                    <option id="ml2o" value="2022">2022</option>
-                                    <option id="ml2o" value="2023">2023</option>
+                                <select name="buy year" class="form-control"  style="margin-left: auto;">
+                                    <option  disabled selected hidden>Buy Year</option>
+                                    <option  value="2015">2015</option>
+                                    <option  value="2016">2016</option>
+                                    <option  value="2017">2017</option>
+                                    <option  value="2018">2018</option>
+                                    <option  value="2019">2019</option>
+                                    <option  value="2020">2020</option>
+                                    <option  value="2021">2021</option>
+                                    <option  value="2022">2022</option>
+                                    <option  value="2023">2023</option>
                                 </select>
                             </div>
                             <div class="col-lg-7">
-                                <select name="price" class="form-control" id="price-list" onchange="location = finalurl2();" style="margin-left: auto;">
-                                    <option value="" id="price-placeholder" disabled selected hidden>Price</option>
-                                    <option id="pr5Lakh" value="500000">less than 5Lakh</option>
-                                    <option id="pr10Lakh" value="1000000">less than 10Lakh</option>
-                                    <option id="pr20Lakh" value="2000000">less than 20Lakh</option>
-                                    <option id="pr50Lakh" value="5000000">less than 50Lakh</option>
+                                <select name="price" class="form-control"  style="margin-left: auto;">
+                                    <option  disabled selected hidden>Price</option>
+                                    <option  value="500000">less than 5Lakh</option>
+                                    <option  value="1000000">less than 10Lakh</option>
+                                    <option  value="2000000">less than 20Lakh</option>
+                                    <option  value="5000000">less than 50Lakh</option>
                                 </select>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-12">
-                                <select name="Kilometer" class="form-control" id="km-run" onchange="location = finalurl3();" style="margin-left: auto;">
-                                    <option value="" id="placeholder" disabled selected hidden>Kilometer Run</option>
-                                    <option id="demand" value="50000">less than 50000</option>
-                                    <option id="-demand" value="100000">less than 100000</option>
-                                    <option id="product_name" value="200000">less than 200000</option>
-                                    <option id="-date_added" value="500000">less than 500000</option>
+                                <select name="kilometer_run" class="form-control" style="margin-left: auto;">
+                                    <option  disabled selected hidden>Kilometer Run</option>
+                                    <option  value="50000">less than 50000</option>
+                                    <option  value="100000">less than 100000</option>
+                                    <option  value="200000">less than 200000</option>
+                                    <option  value="500000">less than 500000</option>
                                 </select>    
                             </div>
                         </div>
-                        <button class="btn btn-primary">Find Now</button>
+                        <button class="btn btn-primary" type="submit">Find Now</button>
                     </form>
                 </div>
             </div>
             <div class="col-lg-9 col-sm-8">
                 <div class="sortby clearfix">
                     <div class="pull-right">
-                        <form action="#" method="post">
-                            <select name="sort" class="form-control" id="sort-list" onchange="location = finalurl();" style="margin-left: auto;">
-                                <option value="" id="placeholder" disabled selected hidden>Sort</option>
-                                <option id="demand" value="demand">Price: Low To High</option>
-                                <option id="-demand" value="-demand">Price: High To Low</option>
-                                <option id="product_name" value="product_name">Car Name</option>
-                                <option id="-date_added" value="-date_added">What's New</option>
-                            </select>
-                        </form>
+                        <select name="sort" class="form-control" id="sort-list" onchange="location = finalurl();" style="margin-left: auto;">
+                            <option value="" id="placeholder" disabled selected hidden>Sort</option>
+                            <option id="demand" value="demand">Price: Low To High</option>
+                            <option id="-demand" value="-demand">Price: High To Low</option>
+                            <option id="usedcar_name" value="usedcar_name">Car Name</option>
+                            <option id="-date_added" value="-date_added">What's New</option>
+                        </select>
                     </div>
                 </div>
                 <div class="row">
@@ -93,16 +91,18 @@
         </div>
     </div>
 </div>
+{% load cars_extras %}
+
 <div class="page1">
     <span>
       {% if page_obj.has_previous %}
-        <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        <a href="{% my_url page_obj.previous_page_number 'page' request.GET.urlencode %}">Previous</a>
       {% endif %}
       <span>
         Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
       </span>
       {% if page_obj.has_next %}
-        <a href="?page={{ page_obj.next_page_number }}">Next</a>
+        <a href="{% my_url page_obj.next_page_number 'page' request.GET.urlencode %}">Next</a>
       {% endif %}
     </span>
   </div>
@@ -128,32 +128,6 @@
         return new_url
     }
 
-    // for getting url after applying price filtering
-    function finalurl2() {
-        var url = new URL(window.location.href);
-        var search_params = url.searchParams;
-        search_params.set('price', document.getElementById("price-list").value);
-        url.search = search_params.toString();
-        var new_url = url.toString();
-        return new_url
-    }
-
-    function finalurl3() {
-        var url = new URL(window.location.href);
-        var search_params = url.searchParams;
-        search_params.set('kilometer_run', document.getElementById("km-run").value);
-        url.search = search_params.toString();
-        var new_url = url.toString();
-        return new_url
-    }
-
-    function finalurl4() {
-        var url = new URL(window.location.href);
-        var search_params = url.searchParams;
-        search_params.set('buy_year', document.getElementById("buy-year").value);
-        url.search = search_params.toString();
-        var new_url = url.toString();
-        return new_url
-    }
+    
   </script>
 {% endblock %}

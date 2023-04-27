@@ -10,11 +10,12 @@
   <div class="spacer">
     <div class="row contact">
       <div class="col-lg-6 col-sm-6">
-        <form action="#" method="post">
-          <input type="text" class="form-control" placeholder="Full Name">
-          <input type="text" class="form-control" placeholder="Email Address">
-          <input type="text" class="form-control" placeholder="Contact Number">
-          <textarea rows="6" class="form-control" placeholder="Message"></textarea>
+        <form action="/contact/" method="post">
+          {% csrf_token %}
+          <input type="text" class="form-control" name="full_name" value="{{full_name}}" placeholder="Full Name">
+          <input type="text" class="form-control" name="email" value="{{email}}" placeholder="Email Address">
+          <input type="text" class="form-control" name="contact" value="{{contact}}" placeholder="Contact Number">
+          <textarea rows="6" class="form-control" name="message" value="{{message}}" placeholder="Message"></textarea>
           <button type="submit" class="btn btn-success" name="Submit">Send Message</button>
         </form>
       </div>
