@@ -1,0 +1,135 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<div class="inside-banner">
+    <div class="container"><span class="pull-right"><a href="{% url 'home' %}">Home</a> /
+            <a href="#">Add Car</a></span>
+        <h2>Add Car</h2>
+    </div>
+</div>
+<div  class="container" style="margin-top: 3rem;">
+    <form  method="post" id="addcarsform" data-models-url="{% url 'ajax_load_models' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+            <div class="form-group col-md-4">
+                <label for="image_1">Image1</label>
+                <input type="file" name="image_1" id="file-input" required>          
+            </div>
+            <div class="form-group col-md-4">
+                <label for="image_2">Image2</label>
+                <input type="file" name="image_2" class ="file-input" required>      
+            </div>
+            <div class="form-group col-md-4">
+                <label for="image_3">Image3</label>
+                <input type="file" name="image_3" src="" alt="">
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-4">
+                <label for="image_4">Image4</label>
+                <input type="file" name="image_4" src="" alt="">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="image_5">Image5</label>
+                <input type="file" name="image_5" src="" alt="">
+            </div>
+            <div class="form-group col-md-4 ">
+                <label for="image_6">Image6</label>
+                <input type="file" name="image_6" src="" alt="">
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-4">
+                <label for="carname">Car Name</label>
+                <input class="form-control" type="text" name="carname" id="carname">
+            </div>
+    
+            <div class="form-group col-md-4">
+                <label for="brand"> Brand</label>
+                <select class="form-control"  name="brand" id="brand" >
+                    <option disabled selected hidden>Brands</option>
+                    {% for brand in brands %}
+                    <option id="{{brand.id}}" value="{{brand.brand_name}}" >{{brand.brand_name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="model">Model</label>
+                <select class="form-control" name="model" id="model">
+                    <option  disabled selected hidden>Models</option>
+                    
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-4">
+                <label for="fuel_type">Fuel Type</label>
+                <select class="form-control" name='fuel_type'>
+                    <option  disabled selected hidden>Fuel</option>
+                    <option value="petrol">Petrol</option>
+                    <option value="diesel">Diesel</option>
+                    <option value="electric">Electric</option>
+                  </select>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="milege">Milege </label>
+                <input class="form-control" type="number" name="milege" >
+            </div>
+            <div class="form-check">
+                <label for="dent">Dent </label>
+                <input class="form-check-input"   type="checkbox" name="dent" >
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label for="kilometer_run">Kilometer Run</label>
+                <input class="form-control" type="number" name="kilometer_run" >
+            </div>
+            <div class="form-group col-md-6">
+                <label for="buy_year">Buy Year </label>
+                <input class="form-control" type="number" name="buy_year" >
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label for="demand">Demand  </label>
+                <input class="form-control" type="number" name="demand" >
+            </div>
+            
+            <div class="form-group col-md-6">
+                <label for="phone_no">Phone</label>
+                <input class="form-control" type="number" name='phone_no'>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="car_desc">Car Description</label>
+            <textarea name="car_desc" class="form-control" cols="30" rows="3"></textarea>
+        </div>
+        <button class="btn btn-primary" type="submit">Submit</button> 
+    </form>
+    <br>
+    <br>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+<script>
+    $("#brand").change(function () {
+      var url = $("#addcarsform").attr("data-models-url");  // get the url of the `load_cities` view
+      var brandId = $(this).val();  // get the selected country ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'brand': brandId       // add the country id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+          $("#model").html(data);  // replace the contents of the city input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
+
+{% endblock %}

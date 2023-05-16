@@ -1,10 +1,10 @@
 {% extends 'base/base.html' %}
-
+{% block title%}Agents{% endblock %}
 {% block content %}
 
 
 <div class="inside-banner">
-  <div class="container"><span class="pull-right"><a href="https://www.free-css.com/free-css-templates">Home</a> / Agents</span>
+  <div class="container"><span class="pull-right"><a href="{% url 'home' %}">Home</a> / Agents</span>
     <h2>Agents</h2>
   </div>
 </div>
@@ -14,13 +14,15 @@
       <div class="col-lg-8  col-lg-offset-2 col-sm-12">
         {% for agent in agents %}
         <div class="row">
-          <div class="col-lg-2 col-sm-2"><a href="https://www.free-css.com/free-css-templates"><img src="/media/{{agent.agent_img}}" class="img-responsive" alt="website template image"></a></div>
+          <div class="col-lg-2 col-sm-2" style="padding: 0%;">
+            <img style="object-fit: cover;" src="/media/{{agent.agent_img}}" class="img-responsive" alt="website template image"></a>
+          </div>
           <div class="col-lg-7 col-sm-7">
             <h4>{{agent.agent_name}}</h4>
             <p>{{agent.agent_desc}}</p>
           </div>
-          <div class="col-lg-3 col-sm-3"><span class="glyphicon glyphicon-envelope"></span> <a href="https://www.free-css.com/free-css-templates">{{agent.agent_email}}</a><br>
-            <span class="glyphicon glyphicon-earphone"></span> {{agent.agent_phn_no}}</div>
+          <div class="col-lg-3 col-sm-3"><span class="glyphicon glyphicon-envelope"></span> <a href="mailto:{{agent.agent_email}}">{{agent.agent_email}}</a><br>
+            <span class="glyphicon glyphicon-earphone"></span><a href="tel:{{ agent.agent_phn_no }}">{{agent.agent_phn_no}}</a> </div>
         </div>
         {% endfor %}
       </div>

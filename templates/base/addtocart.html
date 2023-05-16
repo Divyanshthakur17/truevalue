@@ -1,0 +1,16 @@
+{% extends "base/base.html" %}
+
+{% block content %}
+<div class="container">
+    {% for item in carts %}
+    <div class="product-wrapper">
+        <h1 style="font-size:24px;">{{item}}</h1>
+        <div class="product-price">
+            <p style="text-decoration-line:line-through;">$ {{item.cars.usedcar_name}}</p>
+            <a href="">Add to cart<a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{{cart}}
+{% endblock %}

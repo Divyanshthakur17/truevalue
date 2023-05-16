@@ -1,0 +1,83 @@
+{% extends "base/base.html" %}
+{% block content %}
+{% load static %}
+
+<style>
+    .mydiv{
+        padding: 2rem;
+        background-color: rgb(219, 216, 212);
+        display: flex;
+        justify-content: space-around;
+        margin: 2rem 0;
+    }
+
+    .mydiv-main{
+        display: flex;
+        flex-direction: column;
+        background-color: aliceblue;
+        padding: 1rem;
+    }
+    
+    .mydiv-inner-2{
+        display:flex ;
+        justify-content:center ;
+        align-items: center;
+    }
+    .mydiv-inner-2 button{
+        font-size: larger;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        padding: 1rem 3rem;
+        background-color: darkblue;
+        color: beige;
+        border-radius: 3rem;
+    }
+    .mydiv-inner-2 button:hover{
+        background-color: black;
+    }
+</style>
+<div class="inside-banner">
+    <div class="container"><span class="pull-right"><a href="{% url 'home' %}">Home</a> /
+            <a href="{% url 'wishlist' %}"></a>wishlist</span>
+        <h2>{{user}}'s Wishlist</h2>
+    </div>
+</div>
+<div class="container">
+
+{% if cars %}
+    {% for car in cars %}
+    <div class="mydiv">
+        <div class="mydiv-main">
+            <div class="mydiv-inner">
+                <div class="mydiv-img"><img src="/media/{{car.image_1}}" width="300" height="168" class="img-responsive"
+                        alt="website template image">
+                </div>
+                <div class="status sold">{{car.owner}}</div>
+            </div>
+            <div class="mydiv-inner-1">
+                <h4><a href="property-detail.html">{{car.brand}}</a></h4>
+                <h2 style="font-size: small;">{{car.model}}</h2>
+                <p class="price">{{car.demand}}</p>
+                <a class="btn btn-primary" href="{% url 'details' car.id %}">View Details</a>
+            </div>
+        </div>
+        
+        <div class="mydiv-inner-2">
+            <form action="{% url 'remove-from-wishlist' %}" method="POST">
+            {% csrf_token %}
+                <input type="hidden" name="car_id" value="{{car.id}}">
+                <button type="submit">Remove From Wishlist</button>
+            </form>
+        </div>
+    </div>    
+    {% endfor %}
+{% else %}
+    <div>
+        <h1 style="color:black">Your Wishlist is Empty!</h1>
+        <img src="{% static 'assets/images/download (6).jpeg' %}" width="400"  alt="">
+    </div>
+{% endif %}    
+
+</div>
+
+
+{% endblock %}

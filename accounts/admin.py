@@ -1,8 +1,11 @@
 from django.contrib import admin
+from image_cropping import ImageCroppingMixin
 from accounts.models import User
 
-
-from django.contrib import admin
-
 # Register your models here.
-admin.site.register(User)
+# admin.site.register(User)
+
+class UserAdmin(ImageCroppingMixin, admin.ModelAdmin):
+    pass
+
+admin.site.register(User, UserAdmin)

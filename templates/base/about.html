@@ -1,19 +1,23 @@
 {% extends 'base/base.html' %}
-
+{% block title%}About{% endblock %}
 {% block content %}
 {% load static %}
 
 
 
 <div class="inside-banner">
-  <div class="container"><span class="pull-right"><a href="https://www.free-css.com/free-css-templates">Home</a> / About Us</span>
+  <div class="container"><span class="pull-right"><a href="{% url 'home'%}">Home</a> / About Us</span>
     <h2>About Us</h2>
   </div>
 </div>
 <div class="container">
   <div class="spacer">
     <div class="row">
-      <div class="col-lg-8  col-lg-offset-2"><img src="/media/{{about.image}}" class="img-responsive thumbnail" alt="website template image">
+      <div class="col-lg-8  col-lg-offset-2"> 
+        <div class="mydiv" >
+          <img style=" height: auto; object-fit: cover;"  src="/media/{{about.image}}" class="img-responsive thumbnail" alt="website template image">
+        </div>
+        
         <h3>Business Background</h3>
         <p>{{about.business_background}}</p>
         <h3>Company Profile</h3>

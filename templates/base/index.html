@@ -2,12 +2,26 @@
 {% load static %}
 
 {% block content %}
+
+<style>
+  
+
+  .mydiv-main{
+      display: flex;
+      flex-direction: column;
+      background-color: aliceblue;
+      padding: 1rem;
+  }
+  
+  
+</style>
+
 <div>
   <div id="slider" class="sl-slider-wrapper">
     <div class="sl-slider">
       <div class="sl-slide" data-orientation="horizontal" data-slice1-rotation="-25" data-slice2-rotation="-25" data-slice1-scale="2" data-slice2-scale="2">
         <div class="sl-slide-inner">
-          <div><img src="{% static 'assets/images/a.jpg' %}"width="1800px" height="600px" style="object-fit: cover; z-index: -1;" alt=""></div>
+          <div><img src="{% static 'assets/images/a.jpg' %}" style="width:100%; height: 100%; object-fit:cover;" alt=""></div>
           <h2><a href="https://www.free-css.com/free-css-templates">2 Bed Rooms and 1 Dinning Room Aparment on Sale</a></h2>
           <blockquote>
             <p class="location"><span class="glyphicon glyphicon-map-marker"></span> 1890 Syndey, Australia</p>
@@ -17,7 +31,7 @@
       </div>
       <div class="sl-slide" data-orientation="vertical" data-slice1-rotation="10" data-slice2-rotation="-15" data-slice1-scale="1.5" data-slice2-scale="1.5">
         <div class="sl-slide-inner">
-          <div><img src="{% static 'assets/images/b.jpg' %}" width="1800px" height="600px" style="object-fit: cover;" alt=""></div>
+          <div><img src="{% static 'assets/images/b.jpg' %}" style="width:100%; height: 100%; object-fit:cover;"alt=""></div>
           <h2><a href="https://www.free-css.com/free-css-templates">2 Bed Rooms and 1 Dinning Room Aparment on Sale</a></h2>
           <blockquote>
             <p class="location"><span class="glyphicon glyphicon-map-marker"></span> 1890 Syndey, Australia</p>
@@ -27,7 +41,7 @@
       </div>
       <div class="sl-slide" data-orientation="horizontal" data-slice1-rotation="3" data-slice2-rotation="3" data-slice1-scale="2" data-slice2-scale="1">
         <div class="sl-slide-inner">
-          <div><img src="{% static 'assets/images/c.jpg' %}" width="1800px" height="600px" style="object-fit: cover;" alt=""></div>
+          <div><img src="{% static 'assets/images/c.jpg' %}" style="width:100%; height: 100%; object-fit:cover;"alt=""></div>
           <h2><a href="https://www.free-css.com/free-css-templates">2 Bed Rooms and 1 Dinning Room Aparment on Sale</a></h2>
           <blockquote>
             <p class="location"><span class="glyphicon glyphicon-map-marker"></span> 1890 Syndey, Australia</p>
@@ -37,7 +51,7 @@
       </div>
       <div class="sl-slide" data-orientation="vertical" data-slice1-rotation="-5" data-slice2-rotation="25" data-slice1-scale="2" data-slice2-scale="1">
         <div class="sl-slide-inner">
-          <div><img src="{% static 'assets/images/d.jpg' %}" width="1800px" height="600px" style="object-fit: cover;" alt=""></div>
+          <div><img src="{% static 'assets/images/d.jpg' %}" style="width:100%; height: 100%; object-fit:cover;" alt=""></div>
           <h2><a href="https://www.free-css.com/free-css-templates">2 Bed Rooms and 1 Dinning Room Aparment on Sale</a></h2>
           <blockquote>
             <p class="location"><span class="glyphicon glyphicon-map-marker"></span> 1890 Syndey, Australia</p>
@@ -47,7 +61,7 @@
       </div>
       <div class="sl-slide" data-orientation="horizontal" data-slice1-rotation="-5" data-slice2-rotation="10" data-slice1-scale="2" data-slice2-scale="1">
         <div class="sl-slide-inner">
-          <div><img src="{% static 'assets/images/e.jpg' %}" width="1800px" height="600px" style="object-fit: cover;" alt=""></div>
+          <div><img src="{% static 'assets/images/e.jpg' %}" style="width:100%; height: 100%; object-fit:cover;"alt=""></div>
           <h2><a href="https://www.free-css.com/free-css-templates">2 Bed Rooms and 1 Dinning Room Aparment on Sale</a></h2>
           <blockquote>
             <p class="location"><span class="glyphicon glyphicon-map-marker"></span> 1890 Syndey, Australia</p>
@@ -65,35 +79,36 @@
     <div class="searchbar">
       <div class="row">
         <div class="col-lg-6 col-sm-6">
-          <form action="#" method="post">
-            <input type="text" class="form-control" placeholder="Search of Properties">
+          <form action="" method="get">
+            {% csrf_token %}
+            <input type="text" class="form-control" name="search" value="{{search}}" placeholder="Search of Cars">
             <div class="row">
               <div class="col-lg-3 col-sm-3">
-                <select class="form-control">
-                  <option>Buy</option>
-                  <option>Rent</option>
-                  <option>Sale</option>
+                <select class="form-control" name="type">
+                  <option value = "New">New</option>
+                  <option value = "Used">Used</option>
                 </select>
               </div>
               <div class="col-lg-3 col-sm-4">
-                <select class="form-control">
-                  <option>Price</option>
-                  <option>$150,000 - $200,000</option>
-                  <option>$200,000 - $250,000</option>
-                  <option>$250,000 - $300,000</option>
-                  <option>$300,000 - above</option>
+                <select name="price"  class="form-control"   style="margin-left: auto;">
+                    <option disabled selected hidden>Price</option>
+                    <option value="500000"  {% if price == '500000' %}selected{% endif %}  >less than 5Lakh</option>
+                    <option value="1000000" {% if price == '1000000' %}selected{% endif %}>less than 10Lakh</option>
+                    <option  value="2000000" {% if price == '2000000' %}selected{% endif %}>less than 20Lakh</option>
+                    <option  value="5000000" {% if price == '5000000' %}selected{% endif %}>less than 50Lakh</option>
                 </select>
               </div>
               <div class="col-lg-3 col-sm-4">
-                <select class="form-control">
-                  <option>Property</option>
-                  <option>Apartment</option>
-                  <option>Building</option>
-                  <option>Office Space</option>
-                </select>
+                <select name="body_type" class="form-control"  style="margin-left: auto;">
+                  <option  disabled selected hidden>Body Type</option>
+                  <option value="sedan" {% if body_type == 'sedan' %}selected{% endif %}>Sedan</option>
+                  <option value="SUV" {% if body_type == 'SUV' %}selected{% endif %} >SUV</option>
+                  <option  value="coupe" {% if body_type == 'coupe' %}selected{% endif %} >Coupe</option>
+                  <option  value="MUV" {% if body_type == 'MUV' %}selected{% endif %} >MUV</option>
+              </select>
               </div>
               <div class="col-lg-3 col-sm-4">
-                <button class="btn btn-success">Find Now</button>
+                <button class="btn btn-success" type="submit">Find Now</button>
               </div>
             </div>
           </form>
@@ -117,44 +132,47 @@
   <div class="new-cars spacer">
     <a href="{% url 'newcars' %}" class="pull-right viewall">View All Listing</a>
     <h2>Featured New Cars</h2>
-    <div id="owl-example" class="owl-carousel" >
-      {% for car in cars %}
-      <div class="properties">
-        <div class="image-holder"><img src="/media/{{car.image_1}}" style=" width: 230; height: 130px;  object-fit: cover;" class="img-responsive"
-            alt="website template image">
-          <div class="status sold">Sold</div>
-        </div>
-        <h4><a href="property-detail.html">{{car.brand}}</a></h4>
-        <p class="price">Price: {{car.exshowroom_price}}</p>
-        <div class="listing-detail"><span data-toggle="tooltip" data-placement="bottom"
-            data-original-title="Bed Room">5</span> <span data-toggle="tooltip" data-placement="bottom"
-            data-original-title="Living Room">2</span> <span data-toggle="tooltip" data-placement="bottom"
-            data-original-title="Parking">2</span> <span data-toggle="tooltip" data-placement="bottom"
-            data-original-title="Kitchen">1</span></div>
-        <a class="btn btn-primary" href="{% url 'details' car.id %}">View Details</a>
+    
+      <div id="owl-example" class="owl-carousel" >
+        {% for car in cars %}
+        <div class="mydiv-main">
+          <div class="mydiv-inner">
+              <div class="mydiv-img"><img src="/media/{{car.image_1}}" width="300" height="168" class="img-responsive"
+                      alt="website template image">
+              </div>
+              <div class="status sold">{{car.owner}}</div>
+          </div>
+          <div class="mydiv-inner-1">
+              <h4><a href="property-detail.html">{{car.brand}}</a></h4>
+              <h2 style="font-size: small;">{{car.model}}</h2>
+              <p class="price">{{car.exshowroom_price}}</p>
+              <a class="btn btn-primary" href="{% url 'details' car.id %}">View Details</a>
+          </div>
       </div>
-      {% endfor %}
+        {% endfor %}
+      
     </div>
+    
   </div>
   <div class="used-cars spacer"><a href="{% url 'usedcars' %}" class="pull-right viewall">View All Listing</a>
     <h2>Featured Used Cars</h2>
     <div id="owl-example-1" class="owl-carousel">
       {% for usedcar in usedcars %}
   
-      <div class="properties">
-        <div class="image-holder"><img src="/media/{{usedcar.image_1}}" style=" width: 230; height: 130px;  object-fit: cover;" class="img-responsive"
-            alt="website template image">
-          <div class="status sold">Sold</div>
+      <div class="mydiv-main">
+        <div class="mydiv-inner">
+            <div class="mydiv-img"><img src="/media/{{usedcar.image_1}}" width="300" height="168" class="img-responsive"
+                    alt="website template image">
+            </div>
+            <div class="status sold">{{usedcar.user}}</div>
         </div>
-        <h4><a href="property-detail.html">{{usedcar.usedcar_name}}</a></h4>
-        <p class="price">Price: {{usedcar.demand}}</p>
-        <div class="listing-detail"><span data-toggle="tooltip" data-placement="bottom"
-            data-original-title="Bed Room">5</span> <span data-toggle="tooltip" data-placement="bottom"
-            data-original-title="Living Room">2</span> <span data-toggle="tooltip" data-placement="bottom"
-            data-original-title="Parking">2</span> <span data-toggle="tooltip" data-placement="bottom"
-            data-original-title="Kitchen">1</span></div>
-        <a class="btn btn-primary" href="property-detail.html">View Details</a>
-      </div>
+        <div class="mydiv-inner-1">
+            <h4><a href="property-detail.html">{{usedcar.brand}}</a></h4>
+            <h2 style="font-size: small;">{{usedcar.model}}</h2>
+            <p class="price">{{usedcar.exshowroom_price}}</p>
+            <a class="btn btn-primary" href="{% url 'useddetails' usedcar.id %}">View Details</a>
+        </div>
+    </div>
       {% endfor %}
     </div>
   </div>
@@ -178,48 +196,57 @@
             <li data-target="#myCarousel" data-slide-to="3"></li>
           </ol>
           <div class="carousel-inner">
-            
+          {% for car in cars|slice:":4" %}
+            {% if car.id == 1 %} 
             <div class="item active">
-              {% for car in cars|slice:":4" %}
-              <div class="row">
-                
-                <div class="col-lg-4"><img src="/media/{{car.image_1}}" class="img-responsive" alt="website template image"></div>
+              <div class="row" style="display: flex;">
+                <div class="col-lg-6" style= "height:160px;">
+                  <img style=" object-fit:cover;" src="/media/{{car.image_1}}" width="230" height="140" alt="website template image">
+                </div>
+                <div class="col-lg-6" style="height: 160px;">
+                  <h5><a href="property-detail.html">{{car.brand}}</a></h5>
+                  <p class="price">{{car.exshowroom_price}}</p>
+                  <a href="{% url 'details' car.id %}" class="more">More Detail</a></div>
+              </div>
+            </div>
+            {% elif car.id == 3 %} 
+            <div class="item">
+              <div class="row" style="display: flex;">
+                <div class="col-lg-6" style= "height:160px;">
+                  <img style=" object-fit:cover;"  src="/media/{{car.image_1}}" width="230" height="140" alt="website template image">
+                </div>
                 <div class="col-lg-8">
                   <h5><a href="property-detail.html">{{car.brand}}</a></h5>
                   <p class="price">{{car.exshowroom_price}}</p>
                   <a href="{% url 'details' car.id %}" class="more">More Detail</a></div>
-                
-              </div>
-              {% endfor %}
-            </div>
-            
-            <!-- <div class="item">
-              <div class="row">
-                <div class="col-lg-4"><img src="assets/images/properties/2.jpg" class="img-responsive" alt="website template image"></div>
-                <div class="col-lg-8">
-                  <h5><a href="property-detail.html">Integer sed porta quam</a></h5>
-                  <p class="price">$300,000</p>
-                  <a href="property-detail.html" class="more">More Detail</a></div>
               </div>
             </div>
+            {% elif car.id == 2 %} 
             <div class="item">
-              <div class="row">
-                <div class="col-lg-4"><img src="assets/images/properties/3.jpg" class="img-responsive" alt="website template image"></div>
+              <div class="row" style="display: flex;">
+                <div class="col-lg-6" style= "height:160px;">
+                  <img style=" object-fit:cover;"  src="/media/{{car.image_1}}" width="230" height="140"  alt="website template image">
+                </div>
                 <div class="col-lg-8">
-                  <h5><a href="property-detail.html">Integer sed porta quam</a></h5>
-                  <p class="price">$300,000</p>
-                  <a href="property-detail.html" class="more">More Detail</a></div>
+                  <h5><a href="property-detail.html">{{car.brand}}</a></h5>
+                  <p class="price">{{car.exshowroom_price}}</p>
+                  <a href="{% url 'details' car.id %}" class="more">More Detail</a></div>
               </div>
             </div>
+            {% elif car.id == 4 %} 
             <div class="item">
-              <div class="row">
-                <div class="col-lg-4"><img src="assets/images/properties/4.jpg" class="img-responsive" alt="website template image"></div>
+              <div class="row" style="display: flex;">
+                <div class="col-lg-6" style= "height:160px;">
+                  <img style=" object-fit:cover;"  src="/media/{{car.image_1}}" width="230" height="140"   alt="website template image">
+                </div>
                 <div class="col-lg-8">
-                  <h5><a href="property-detail.html">Integer sed porta quam</a></h5>
-                  <p class="price">$300,000</p>
-                  <a href="property-detail.html" class="more">More Detail</a></div>
+                  <h5><a href="property-detail.html">{{car.brand}}</a></h5>
+                  <p class="price">{{car.exshowroom_price}}</p>
+                  <a href="{% url 'details' car.id %}" class="more">More Detail</a></div>
               </div>
-            </div> -->
+            </div>
+            {% endif %}
+          {% endfor %}
           </div>
         </div>
       </div>
@@ -228,10 +255,5 @@
 </div>
 
 
-<script src="{% static 'assets/js/notiflix.js' %}"></script>
-<script>
-  {% if success %}
-  Notiflix.Notify.success('Login Successfully!')
-  {% endif %}
-</script>
+
 {% endblock %}

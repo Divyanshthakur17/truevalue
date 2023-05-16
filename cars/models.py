@@ -1,20 +1,8 @@
 from django.db import models
 from django.utils import timezone
-
+from accounts.models import User
 # Create your models here.
 
-# brand =tate_choices = (
-#     ("Hyundai","Hyundai"),
-#     ("Kia","Kia"),
-#     ("Mahindra","Mahindra"),
-#     ("Toyota","Toyota"),
-#     ("Honda","Honda"),
-#     ("Maruti Suzuki","Maruti Suzuki"),
-#     ("Tata Motors","Tata Motors"),
-#     ("Renault","Renault"),
-#     ("Honda","Honda"),
-#     ("Honda","Honda"),
-# )
 
 
 class Brand(models.Model):
@@ -26,10 +14,11 @@ class Brand(models.Model):
     
 class Model(models.Model):
     model_name = models.CharField(max_length = 20)
-    model_desc = models.TextField()
+    brand = models.ForeignKey(Brand, on_delete=models.CASCADE , default=1)
+
 
     def __str__(self):
-        return self.model_name
+        return self.model_name + "---" + self.brand.brand_name
 
 
 class NewCars(models.Model):
@@ -41,7 +30,7 @@ class NewCars(models.Model):
     image_6 = models.ImageField(upload_to='images/',blank=True,null=True)
     car_name = models.CharField(max_length=100, null= True, blank=True)
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
-    model =models.ForeignKey(Model, on_delete=models.CASCADE)
+    model = models.ForeignKey(Model, on_delete=models.CASCADE)
     engine = models.CharField(max_length=100)
     milege = models.FloatField()
     fuel_type = models.CharField(max_length=100)
@@ -57,6 +46,8 @@ class NewCars(models.Model):
     # class Meta:
         # ordering = ['-exshowroom_price']
     
+    def __str__(self):
+        return self.model.model_name
     
 
 class UsedCars(models.Model):
@@ -69,6 +60,7 @@ class UsedCars(models.Model):
     usedcar_name = models.CharField(max_length=100, null= True, blank=True)
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
     model =models.ForeignKey(Model, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, null=True,blank=True, on_delete=models.CASCADE)
     milege = models.FloatField()
     fuel_type = models.CharField(max_length=100)
     dent = models.BooleanField(default=False)
@@ -79,3 +71,30 @@ class UsedCars(models.Model):
     phone_no = models.CharField(max_length=10)
     used_car_detail = models.TextField(blank=True, null=True)
 
+    def __str__(self):
+        return self.brand.brand_name
+
+  
+class Commentcars(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_on = models.DateTimeField(auto_now_add=True)
+    usedcar = models.ForeignKey(UsedCars, related_name='comment_content', on_delete=models.CASCADE)
+    content = models.TextField()
+
+class Cart(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    cars = models.ForeignKey(UsedCars, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return self.cars.brand.brand_name
+    
+
+class WishItem(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    cars = models.ManyToManyField(UsedCars, blank=True)
+    def __str__(self):
+        return self.user.first_name
+    
+
+class Divyansh(models.Model):
+    img=models.ImageField(upload_to='divyansh/')

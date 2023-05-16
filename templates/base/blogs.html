@@ -1,8 +1,8 @@
 {% extends 'base/base.html' %}
-
+{% block title%}Blogs{% endblock %}
 {% block content %}
 <div class="inside-banner">
-  <div class="container"><span class="pull-right"><a href="https://www.free-css.com/free-css-templates">Home</a> / Blogs</span>
+  <div class="container"><span class="pull-right"><a href="{% url 'home' %}">Home</a> / Blogs</span>
     <h2>Blogs</h2>
   </div>
 </div>
@@ -12,12 +12,14 @@
       <div class="col-lg-8 col-sm-12">
         {% for blog in blogs %}
         <div class="row">
-          <div class="col-lg-4 col-sm-4"><a href="blogdetail.html" class="thumbnail"><img src="/media/{{blog.blog_img}}" alt="website template image"></a></div>
+          <div class="mydiv1" style="background-color: black; width: 240px; height: 240px;padding: 2rem; margin-bottom: 3rem;">
+            <img class="myimg" style=" object-fit: contain;" src="/media/{{blog.blog_img}}" width="200" height="200" alt="website template image">
+          </div> 
           <div class="col-lg-8 col-sm-8">
             <h3><a href="blogdetail.html">{{blog.blog_name}}</a></h3>
             <div class="info">{{posted_on}}</div>
             <p>{{blog.blog_desc}}</p>
-            <a href="blogdetail.html" class="more">Read More</a></div>
+            <a href="{% url 'blogdetail' blog.id %}" class="more">Read More</a></div>
         </div>
         {% endfor %}
       </div>
@@ -26,11 +28,37 @@
         <div class="tabbable">
           <ul class="nav nav-tabs">
             <li><a href="#tab1" data-toggle="tab">Recent Post</a></li>
-            <li class ="active" ><a href="#tab2" data-toggle="tab">Most Popular</a></li>
-            <!-- <li class="active"><a href="#tab3" data-toggle="tab">Most Commented</a></li> -->
+            <!-- <li class ="active" ><a href="#tab2" data-toggle="tab">Most Popular</a></li> -->
+            <li class="active"><a href="#tab3" data-toggle="tab">Most Commented</a></li>
           </ul>
           <div class="tab-content">
             <div class="tab-pane" id="tab1">
+              <ul class="list-unstyled">
+                {% for blog in blogs %}
+                <li>
+                  <h5><a href="{% url 'blogdetail' blog.id %} ">{{blog.blog_name}}</a></h5>
+                  <div class="info">Posted on: {{blog.posted_on}}</div>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+            <!-- <div class="tab-pane" id="tab2">
+              <ul class="list-unstyled">
+                <li>
+                  <h5><a href="blogdetail.html">Market update on new apartments</a></h5>
+                  <div class="info">Posted on: Jan 20, 2056</div>
+                </li>
+                <li>
+                  <h5><a href="blogdetail.html">Market update on new apartments</a></h5>
+                  <div class="info">Posted on: Jan 20, 2056</div>
+                </li>
+                <li>
+                  <h5><a href="blogdetail.html">Market update on new apartments</a></h5>
+                  <div class="info">Posted on: Jan 20, 2056</div>
+                </li>
+              </ul>
+            </div> -->
+            <div class="tab-pane active" id="tab3" name = 'comment'>
               <ul class="list-unstyled">
                 {% for blog in blogs %}
                 <li>
@@ -39,35 +67,7 @@
                 </li>
                 {% endfor %}
               </ul>
-            </div>
-            <div class="tab-pane" id="tab2">
-              <ul class="list-unstyled">
-                <li>
-                  <h5><a href="blogdetail.html">Market update on new apartments</a></h5>
-                  <div class="info">Posted on: Jan 20, 2056</div>
-                </li>
-                <li>
-                  <h5><a href="blogdetail.html">Market update on new apartments</a></h5>
-                  <div class="info">Posted on: Jan 20, 2056</div>
-                </li>
-                <li>
-                  <h5><a href="blogdetail.html">Market update on new apartments</a></h5>
-                  <div class="info">Posted on: Jan 20, 2056</div>
-                </li>
-              </ul>
-            </div>
-            <!-- <div class="tab-pane active" id="tab3">
-              <ul class="list-unstyled">
-                <li>
-                  <h5><a href="blogdetail.html">Creative business to takeover the market</a></h5>
-                  <div class="info">Posted on: Jan 20, 2056</div>
-                </li>
-                <li>
-                  <h5><a href="blogdetail.html">Creative business to takeover the market</a></h5>
-                  <div class="info">Posted on: Jan 20, 2056</div>
-                </li>
-              </ul>
-            </div> -->
+            </div> 
           </div>
         </div>
       </div>

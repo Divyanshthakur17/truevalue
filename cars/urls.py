@@ -6,5 +6,11 @@ urlpatterns = [
     path('usedcars/',views.UsedCarViews, name='usedcars'),
     path('newcars/<int:pk>/',views.cardetail, name='details'),
     path('usedcars/<int:pk>/',views.usedcardetail, name='useddetails'),
-    # path('high_to_low/',views.high_low, name='highlow'),
+    path('cart/', views.cartview, name = 'add-to-cart'),
+    path('wishlist/', views.wishlist, name = 'wishlist'),
+    path('add-to-wishlist/',views.addToWishlist, name = "add-to-wishlist"),
+    path('delete-from-wishlist/',views.deleteFromWishlist, name = "remove-from-wishlist"),
+    path('addcars/',views.addCars, name = "addcars"),
+    path('ajax/load-models/', views.load_models, name='ajax_load_models'),
+    path('cropcar/', views.cropcar, name='cropcar'),
 ]

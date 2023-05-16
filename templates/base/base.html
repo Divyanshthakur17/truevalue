@@ -4,7 +4,7 @@
 <html>
 
 <head>
-    <title>Free CSS | Free CSS Templates | Demo of the HTML CSS Template RealEstate</title>
+    <title>{% block title%}Truevalues{% endblock %}</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{% static 'assets/css/bootstrap.css' %}">
@@ -38,6 +38,7 @@
             margin: 0 auto;
         }
     </style>
+    {{ form.media }}
 </head>
 
 <body>
@@ -52,8 +53,8 @@
                                 class="icon-bar"></span>
                         </button>
                     </div>
-                    <div class="collapse">
-                        <ul class="nav navbar-nav navbar-right" style="margin-top:0px;">
+                    <div class="collapse" style="height: 40px;">
+                        <ul class="nav navbar-nav navbar-right" style="margin-top:0px; height: 40px;">
                             {% url 'home' as url %}
                             <li class='{% if request.path == url %}active{% endif %}'><a href="{{url}}">Home</a></li>
                             {% url 'about' as url %}
@@ -65,12 +66,17 @@
                             {% url 'contact' as url %}
                             <li class=" {% if request.path == url %}active{% endif %}"><a href="{{url}}">Contact</a></li>
                         </ul>
-                        <ul class="colapse-ul-">
+                        <ul class="nav navbar-nav navbar-right" style="margin-top: 0;">
                         {% if user.is_authenticated %}
-                            {% url '' as url %}
-                            <li class=" {% if request.path == url %}active{% endif %}"><a href="{{url}}">WELCOME    {{user.first_name}}</a></li>
                             {% url 'logout' as url %}
                             <li style="cursor: pointer;" ><a onclick="getCurrentURL()">Logout</a></li>
+                            {% url 'wishlist' as url %}
+                            <li class=" {% if request.path == url %}active{% endif %}"><a href="{{url}}">Wishlist</a></li>
+                            <!-- {% url 'user_profile' as url %}
+                            <li class=" {% if request.path == url %}active{% endif %}">  <a href="{{url }}"><img src="{% static 'assets/images/images (1).png' %}" width="50" alt=""></a></li>
+                            {% url 'user_profile' as url %} -->
+                            <li class=" {% if request.path == url %}active{% endif %}">  <a href="{{url }}">WELCOME    {{user.first_name}}</a></li>
+                            
 			            {% else %}
                             {% url 'register' as url %}
                             <li class=" {% if request.path == url %}active{% endif %}"><a href="{{url}}">Signup</a></li>
@@ -100,6 +106,7 @@
 
 
     {% block content %}{% endblock %}
+
 
     <footer class="footer">
         <div class="container">
@@ -176,7 +183,8 @@
             </div>
         </div>
     </footer>
-
+    
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="{% static 'assets/js/jquery-1.9.1.min.js' %}"></script>
     <script src="{% static 'assets/js/bootstrap.js' %}"></script>
     <script src="{% static 'assets/js/script.js' %}"></script>
@@ -184,7 +192,12 @@
     <script src="{% static 'assets/js/modernizr.custom.79639.js' %}"></script>
     <script src="{% static 'assets/js/jquery.ba-cond.min.js' %}"></script>
     <script src="{% static 'assets/js/jquery.slitslider.js' %}"></script>
+    <script src="{% static 'assets/js/notiflix.js' %}"></script>
 
+   
+
+
+   
     <script type="text/javascript">
         (function () {
             var bsa = document.createElement('script');
@@ -193,6 +206,34 @@
             bsa.src = '//s3.buysellads.com/ac/bsa.js';
             (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(bsa);
         })();
+    </script>
+    
+
+    <script type="text/javascript">
+      $(document).on('submit','#post-form', function(e){
+        e.preventDefault();
+    
+        $.ajax({
+          type: 'post',
+          url: '{% url "signin" %}',
+          data: {
+            email: $('#email').val(),
+            password:$('#password').val(),
+            csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+          },
+          success: function (resp) {
+            if (resp.status == 'success') {
+                location.href = '/'
+                Notiflix.Notify.success('Login Successfully.......')
+            }
+            
+    
+            if (resp.status == 'failed') {
+              Notiflix.Notify.failure('Invalid Username or Password!')
+            }
+         }
+        });
+      });
     </script>
 
     <script type="text/javascript">
@@ -238,6 +279,7 @@
     }
 
     </script>
+    
 
 </body>
 

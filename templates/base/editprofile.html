@@ -1,0 +1,128 @@
+{% extends 'base/base.html'%}
+{% block title%}Edit Profile{% endblock %}
+{% block content %}
+{% load static %}
+
+<div class="inside-banner">
+    <div class="container"><span class="pull-right"><a href="{% url 'home' %}">Home</a> /
+            <a href="#">Edit Profile</a></span>
+        <h2>Edit Profile</h2>
+    </div>
+</div>
+<div  class="container" style="margin-top: 3rem;">
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+            <!-- <div class="form-group col-md-4">
+                <label for="user_image">User Image</label>
+                <img {% if user.user_image %} src="{{user.user_image.url}}" {% else %} alt="You have no image." {% endif %}>
+                <input type="file"   name="user_image"  >       
+            </div> -->
+            <div class="form-group col-md-4">
+                <label for="image_2">Cover Image</label>
+                <img {% if user.user_coverimage %} src="{{user.user_coverimage.url}}" {% else %} alt="You have no image." {% endif %}>
+                <input type="file" name="cover_image"  value={{user.user_coverimage}}>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label for="first_name">First Name</label>
+                <input class="form-control" type="text" name="first_name"  value="{{user.first_name}}">
+            </div>
+    
+            <div class="form-group col-md-6">
+                <label for="last_name">Last Name</label>
+                <input class="form-control" type="text" name="last_name" value="{{user.last_name}}">
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label for="email">Email </label>
+                <input class="form-control" type="email" name="email" value="{{user.email}}">
+            </div>
+
+            <div class="form-group col-md-6">
+                <label for="phone">Phone </label>
+                <input class="form-control" type="number" name="phone" value="{{user.mobile}}" >
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="address">Address </label>
+            <input class="form-control" type="text" name="address" value="{{user.address}}" >
+        </div>
+        <button class="btn btn-primary" type="submit">Submit</button> 
+    </form>
+    <br>
+    <br>
+</div>
+<!-- <script>
+     
+    
+ 
+    // vars
+    let result = document.querySelector('.result'),
+        img_result = document.querySelector('.img-result'),
+        img_w = document.querySelector('.img-w'),
+        img_h = document.querySelector('.img-h'),
+        options = document.querySelector('.options'),
+        save = document.querySelector('.save'),
+        cropped = document.querySelector('.cropped'),
+        dwn = document.querySelector('.download'),
+        upload = document.querySelector('#file-input'),
+        cropper = '';
+
+    // on change show image with crop options
+    upload.addEventListener('change', e => {
+        if (e.target.files.length) {
+            // start file reader
+            const reader = new FileReader();
+            reader.onload = e => {
+                if (e.target.result) {
+                    // create new image
+                    let img = document.createElement('img');
+                    img.id = 'image';
+                    img.src = e.target.result;
+                    // clean result before
+                    result.innerHTML = '';
+                    // append new image
+                    result.appendChild(img);
+                    console.log(img_result)
+                    // show save btn and options
+                    save.classList.remove('hide');
+                    options.classList.remove('hide');
+                    // init cropper
+                    cropper = new Cropper(img);
+                }
+            };
+            reader.readAsDataURL(e.target.files[0]);
+        }
+        // function product(img_result){
+        //     return img_result
+        // }
+        // console.log(product(img_result))
+        // document.getElementById("my-img").value = result
+    });
+
+    // save on click
+    save.addEventListener('click', e => {
+        e.preventDefault();
+        // get result to data uri
+        let imgSrc = cropper.getCroppedCanvas({
+            width: img_w.value // input value
+        }).toDataURL();
+        // remove hide class of img
+        cropped.classList.remove('hide');
+        img_result.classList.remove('hide');
+        // show image cropped
+        cropped.src = imgSrc;
+     let element = document.getElementById('cropped_id')
+     element.textContent = element.textContent + imgSrc
+     document.getElementById('my-img').value = imgSrc
+        dwn.classList.remove('hide');
+        dwn.download = 'imagename.png';
+        dwn.setAttribute('href', imgSrc);
+    });
+</script> -->
+
+{% endblock %}

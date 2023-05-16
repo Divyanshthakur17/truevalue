@@ -1,0 +1,160 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'assets/css/custom.css' %}">
+<div class="inside-banner">
+    <div class="container"><span class="pull-right"><a href="{% url 'home' %}">Home</a> /
+            <a href="{% url 'newcars' %}">New Cars</a></span>
+        <h2>New Cars </h2>
+    </div>
+</div>
+
+<div class="container">
+    <div class="properties-listing spacer">
+        <div class="row">
+            <div class="col-lg-3 col-sm-4">
+                <div class="search-form">
+                    <h4><span class="glyphicon glyphicon-search"></span> Search for</h4>
+                    <form method="get">
+                        <input type="text" class="form-control" name="search" value="{{search}}"  placeholder="Search of Car">
+                        <div class="row">
+                            <div class="col-lg-7">
+                                <select name="milege" class="form-control"   style="margin-left: auto;">
+                                    <option  disabled selected hidden>Milege</option>
+                                    <option  value="15" {% if milege == '15' %}selected{% endif %} >less than 15</option>
+                                    <option  value="20" {% if milege == '20' %}selected{% endif %} >less than 20</option>
+                                    <option  value="25" {% if milege == '25' %}selected{% endif %} >less than 25</option>
+                                </select>
+                                
+                            </div>
+                            <div class="col-lg-8">
+                                <select name="price"  class="form-control"   style="margin-left: auto;">
+                                    <option disabled selected hidden>Price</option>
+                                    <option value="500000"  {% if price == '500000' %}selected{% endif %}  >less than 5Lakh</option>
+                                    <option value="1000000" {% if price == '1000000' %}selected{% endif %}>less than 10Lakh</option>
+                                    <option  value="2000000" {% if price == '2000000' %}selected{% endif %}>less than 20Lakh</option>
+                                    <option  value="5000000" {% if price == '5000000' %}selected{% endif %}>less than 50Lakh</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <select name="body_type" class="form-control"  style="margin-left: auto;">
+                                    <option  disabled selected hidden>Body Type</option>
+                                    <option value="sedan" {% if body_type == 'sedan' %}selected{% endif %}>Sedan</option>
+                                    <option value="SUV" {% if body_type == 'SUV' %}selected{% endif %} >SUV</option>
+                                    <option  value="coupe" {% if body_type == 'coupe' %}selected{% endif %} >Coupe</option>
+                                    <option  value="MUV" {% if body_type == 'MUV' %}selected{% endif %} >MUV</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary"  name="my_btn" type="submit" >Find Now</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-9 col-sm-8">
+                <div class="sortby clearfix">
+                    <div class="pull-right">
+                        <select name="sort" class="form-control" id="sort-list" onchange="location = finalurl();" style="margin-left: auto;">
+                            <option value="" id="placeholder" disabled selected hidden>Sort</option>
+                            <option id="exshowroom_price" value="exshowroom_price">Price: Low To High</option>
+                            <option id="-exshowroom_price" value="-exshowroom_price">Price: High To Low</option>
+                            <option id="product_name" value="product_name">Car Name</option>
+                            <option id="-date_added" value="-date_added">What's New</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    {% for car in cars %}
+                    <div class="col-lg-4 col-sm-6">
+                        <div class="properties">
+                            <div class="image-holder"><img src="/media/{{car.image_1}}" width="300" height="168"
+                                    class="img-responsive" alt="website template image">
+                                <div class="status sold">{{car.owner}}</div>
+                            </div>
+                            <h4><a href="property-detail.html">{{car.brand}}</a></h4>
+                            <h2 style="font-size: small;">{{car.model}}</h2>
+                            <p class="price">{{car.exshowroom_price}}</p>
+
+                            <a class="btn btn-primary" href="{% url 'details' car.id %}">View Details</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="media-list">
+    {% for comment in comments %}
+    <div>
+        <!-- <img class="avatar avatar-sm mr-4" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"> -->
+
+        <div class="media-body" style="background-color: rgb(245, 229, 220);">
+            <div class="small-1" >
+                <b> {{comment.user}}</b>
+                <time class="ml-4 opaciy-70 small-3"> {{comment.date}}</time>
+            </div>
+            <p style="text-align:left;"> {{comment.content}}</p>
+        </div>
+        {% for replay in comment.replies.all %}
+        <li style="text-align: center;">{{ replay.content }}</li>
+        <p class="info" style="text-align: center;">{{ replay.user }} | {{ replay.date }}</p>
+        
+    
+        {% endfor %}
+        <h5><button onclick= "showDiv('{{comment.id}}')" ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-reply" viewBox="0 0 16 16">
+            <path d="M6.598 5.013a.144.144 0 0 1 .202.134V6.3a.5.5 0 0 0 .5.5c.667 0 2.013.005 3.3.822.984.624 1.99 1.76 2.595 3.876-1.02-.983-2.185-1.516-3.205-1.799a8.74 8.74 0 0 0-1.921-.306 7.404 7.404 0 0 0-.798.008h-.013l-.005.001h-.001L7.3 9.9l-.05-.498a.5.5 0 0 0-.45.498v1.153c0 .108-.11.176-.202.134L2.614 8.254a.503.503 0 0 0-.042-.028.147.147 0 0 1 0-.252.499.499 0 0 0 .042-.028l3.984-2.933zM7.8 10.386c.068 0 .143.003.223.006.434.02 1.034.086 1.7.271 1.326.368 2.896 1.202 3.94 3.08a.5.5 0 0 0 .933-.305c-.464-3.71-1.886-5.662-3.46-6.66-1.245-.79-2.527-.942-3.336-.971v-.66a1.144 1.144 0 0 0-1.767-.96l-3.994 2.94a1.147 1.147 0 0 0 0 1.946l3.994 2.94a1.144 1.144 0 0 0 1.767-.96v-.667z"/>
+          </svg>Reply</button> </h5>
+          <br>
+          <br>
+          <br>
+        <div id="{{comment.id}}" style="display:none;">
+            <form action="." method="post">
+                {{ comment_form.as_p }}
+                {% csrf_token %}
+                <!-- Hidden input for parent comment.id -->
+                <input type="hidden" name="parent_id" value="{{ comment.id }}">
+                <input class="btn btn-primary" type="submit" value="Reply">
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% load cars_extras %}
+
+<div class="page1">
+    <span>
+      {% if page_obj.has_previous %}
+        <a href="{% my_url page_obj.previous_page_number 'page' request.GET.urlencode %}">Previous</a>
+      {% endif %}
+      <span>
+        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+      </span>
+      {% if page_obj.has_next %}
+        <a href="{% my_url page_obj.next_page_number 'page' request.GET.urlencode %}">Next</a>
+      {% endif %}
+    </span>
+  </div>
+  <script>
+    function get(name) {
+        if (name = (new RegExp('[?&]' + encodeURIComponent(name) + '=([^&]*)')).exec(location.search))  //location.search give query sling part
+            return decodeURIComponent(name[1]);
+    }
+
+    if(get('ordering'))
+    document.getElementById('placeholder').innerHTML = "Sort: " + document.getElementById(get('ordering')).innerHTML;
+    
+
+    function finalurl() {
+        var url = new URL(window.location.href);
+        var search_params = url.searchParams;
+        search_params.set('ordering', document.getElementById("sort-list").value);
+        url.search = search_params.toString();
+        var new_url = url.toString();
+        return new_url
+    }
+  
+  </script>
+{% endblock %}

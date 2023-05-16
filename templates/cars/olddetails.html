@@ -1,0 +1,167 @@
+{% extends 'base/base.html' %}
+
+
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'assets/css/custom.css' %}">
+
+<div class="inside-banner">
+  <div class="container"><span class="pull-right"><a href="{% url 'home' %}">Home</a> / Buy</span>
+    <h2>Buy</h2>
+  </div>
+</div>
+
+<div>
+  <div id="slider" class="sl-slider-wrapper" style="width: 800px; height: 400px; margin-top: 6rem;">
+    <div class="sl-slider">
+      <div class="sl-slide" data-orientation="horizontal" data-slice1-rotation="-25" data-slice2-rotation="-25"
+        data-slice1-scale="2" data-slice2-scale="2">
+        <div class="sl-slide-inner">
+          <div class="bg-img bg-img-1" style="width: 800px; height: 400px;"><img style="width:100%; height: 100%; object-fit:cover;" src="{{car.image_1.url}}" width="900" height="600" alt=""></div>
+        </div>
+      </div>
+      <div class="sl-slide" data-orientation="vertical" data-slice1-rotation="10" data-slice2-rotation="-15"
+        data-slice1-scale="1.5" data-slice2-scale="1.5">
+        <div class="sl-slide-inner">
+          <div class="bg-img bg-img-2" style="width: 800px; height: 400px;"><img style="width:100%; height: 100%; object-fit:cover;" src="{{car.image_2.url}}" width="900" height="600" alt=""></div>
+        </div>
+      </div>
+      <div class="sl-slide" data-orientation="horizontal" data-slice1-rotation="3" data-slice2-rotation="3"
+        data-slice1-scale="2" data-slice2-scale="1">
+        <div class="sl-slide-inner">
+          <div class="bg-img bg-img-3" style="width: 800px; height: 400px;"><img style="width:100%; height: 100%; object-fit:cover;" src="{{car.image_2.url}}" width="900" height="600" alt=""></div>
+        </div>
+      </div>
+      <div class="sl-slide" data-orientation="vertical" data-slice1-rotation="-5" data-slice2-rotation="25"
+        data-slice1-scale="2" data-slice2-scale="1">
+        <div class="sl-slide-inner">
+          <div class="bg-img bg-img-4" style="width: 800px; height: 400px;"><img style="width:100%; height: 100%; object-fit:cover;" src="{{car.image_2.url}}" width="900" height="600" alt=""></div>
+        </div>
+      </div>
+      <div class="sl-slide" data-orientation="horizontal" data-slice1-rotation="-5" data-slice2-rotation="10"
+        data-slice1-scale="2" data-slice2-scale="1">
+        <div class="sl-slide-inner">
+          <div class="bg-img bg-img-5" style="width: 800px; height: 400px;"><img style="width:100%; height: 100%; object-fit:cover;" src="{{car.image_2.url}}" width="900" height="600" alt=""></div>
+        </div>
+      </div>
+    </div>
+    <nav id="nav-dots" class="nav-dots"><span class="nav-dot-current"></span> <span></span> <span></span> <span></span>
+      <span></span></nav>
+  </div>
+</div>
+
+<div class="container">
+  <div class="properties-listing spacer">
+    <div class="row">
+      <div class="col-lg-9 col-sm-8">
+        <div class="mydetail">
+          <H1>BRAND<span>{{car.brand}}</span></H1>
+          <H3>MODEL<span>{{car.model}}</span></H3>
+          <H3>MILEGE<span>{{car.milege}}</span></H3>
+          <H3>FUEL TYPE<span>{{car.fuel_type}}</span></H3>
+          <H3>KILOMETER RUN<span>{{car.kilometer_run}}</span></H3>
+          <H3>BUY YEAR<span>{{car.buy_year}}</span></H3>
+          <H3>DEMAND<span>{{car.demand}}</span></H3>
+          <H3>OWNER<span>{{car.owner}}</span></H3>
+          <H3>PHONE NO<span>{{car.phone_no}}</span></H3>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <div class="row">
+          <div class="col-lg-8">
+            <div class="property-images">
+              <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                <ol class="carousel-indicators hidden-xs">
+                  <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                  <li data-target="#myCarousel" data-slide-to="1"></li>
+                  <li data-target="#myCarousel" data-slide-to="2"></li>
+                  <li data-target="#myCarousel" data-slide-to="3"></li>
+                </ol>
+                <!-- <div class="carousel-inner">
+                  <div class="item active"><img src="assets/images/properties/4.jpg" class="properties" alt="website template image"></div>
+                  <div class="item"><img src="assets/images/properties/2.jpg" class="properties" alt="website template image"></div>
+                  <div class="item"><img src="assets/images/properties/1.jpg" class="properties" alt="website template image"></div>
+                  <div class="item"><img src="assets/images/properties/3.jpg" class="properties" alt="website template image"></div>
+                </div> -->
+                <a class="left carousel-control" href="#myCarousel" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a> <a class="right carousel-control" href="#myCarousel" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a></div>
+            </div>
+            <div class="spacer">
+              <h4><span class="glyphicon glyphicon-th-list"></span> Car Detail</h4>
+              <p>Efficiently unleash cross-media information without cross-media value. Quickly maximize timely deliverables for real-time schemas. Dramatically maintain clicks-and-mortar solutions without functional solutions.</p>
+              <p>Completely synergize resource sucking relationships via premier niche markets. Professionally cultivate one-to-one customer service with robust ideas. Dynamically innovate resource-leveling customer service for state of the art customer service</p>
+            </div>
+            <div>
+              <h4><span class="glyphicon glyphicon-map-marker"></span> Location</h4>
+              <div class="well">
+                <iframe width="100%" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="//maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=Pulchowk,+Patan,+Central+Region,+Nepal&amp;aq=0&amp;oq=pulch&amp;sll=37.0625,-95.677068&amp;sspn=39.371738,86.572266&amp;ie=UTF8&amp;hq=&amp;hnear=Pulchowk,+Patan+Dhoka,+Patan,+Bagmati,+Central+Region,+Nepal&amp;ll=27.678236,85.316853&amp;spn=0.001347,0.002642&amp;t=m&amp;z=14&amp;output=embed"></iframe>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="col-lg-12  col-sm-6">
+              <div class="property-info">
+                <p class="price">{{cars.demand}}</p>
+                <p class="area"><span class="glyphicon glyphicon-map-marker"></span> 344 Villa, Syndey, Australia</p>
+                <div class="profile"> <span class="glyphicon glyphicon-user"></span> Owner Details
+                  <p>{{car.request.user}}<br>
+                    {{car.phone_no}}</p>
+                </div>
+              </div>
+              {{request.user}}
+              <h6><span class="glyphicon glyphicon-home"></span> Availabilty</h6>
+              <div class="listing-detail"> <span data-toggle="tooltip" data-placement="bottom" data-original-title="Bed Room">5</span> <span data-toggle="tooltip" data-placement="bottom" data-original-title="Living Room">2</span> <span data-toggle="tooltip" data-placement="bottom" data-original-title="Parking">2</span> <span data-toggle="tooltip" data-placement="bottom" data-original-title="Kitchen">1</span></div>
+            </div>
+            <div class="col-lg-12 col-sm-6">
+              <div class="enquiry">
+                <h6><span class="glyphicon glyphicon-envelope"></span> For Enquiry</h6>
+                <form action="#" method="post">
+                  <input type="text" class="form-control" placeholder="Full Name">
+                  <input type="text" class="form-control" placeholder="you@yourdomain.com">
+                  <input type="text" class="form-control" placeholder="your number">
+                  <textarea rows="6" class="form-control" placeholder="Whats on your mind?"></textarea>
+                  <button type="submit" class="btn btn-primary" name="Submit">Send Message</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <form method="POST" action="">
+      {% csrf_token %}
+      <div class="form-group">
+          {{comment_form}}
+      </div> 
+      <button class="btn btn-primary btn-block " type="submit">Comment</button>   
+  </form> 
+  </div>
+  {% for comment in comments %}
+  <div style="box-flex-group: rgb(229, 207, 166);">
+    <li class="comment">
+      <div class="comment-body">
+        <h3>{{ comment.content }}</h3>
+        <div class="meta mb-3">{{ comment.created_on }}</div>
+        <p>{{ comment.user}}</p>
+        <p><a href="#" class="reply">Reply</a></p>
+        <hr style="color: black;">
+        {% for reply in comment.get_replies %}
+                <li class="reply">
+                  <div class="reply-body">
+                    <h3>{{ reply.user}}</h3>
+                    <div class="meta mb-3">{{ reply.created_on}}</div>
+                    <p>{{ reply.reply }}</p>
+                    #ToDo Create a view to add replies and hook the url to href below
+                    <p><a href="#" class="reply">Reply</a></p>
+                  </div>
+                </li>
+        {% endfor %}
+      </div>
+    </li>
+  </div>
+  {% endfor %}
+  </div>
+{% endblock %}
