@@ -19,7 +19,10 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'truevalues.settings')
 application =  ProtocolTypeRouter({
     'http': get_asgi_application(),
     'websocket': AuthMiddlewareStack(
-        chat.routing.websocket_urlpatterns
+        URLRouter(
+            chat.routing.websocket_urlpatterns
+        )
     )
+
     
 })
