@@ -44,10 +44,13 @@ INSTALLED_APPS = [
     'base',
     'accounts',
     'cars',
+    'chat',
 
     # third parties app
     'easy_thumbnails',
     'image_cropping',
+
+    
 ]
 
 from easy_thumbnails.conf import Settings as thumbnail_settings
@@ -55,8 +58,11 @@ THUMBNAIL_PROCESSORS = (
     'image_cropping.thumbnail_processors.crop_corners',
 ) + thumbnail_settings.THUMBNAIL_PROCESSORS
 
-# IMAGE_CROPPING_BACKEND = 'image_cropping.backends.easy_thumbs.EasyThumbnailsBackend'
-# IMAGE_CROPPING_BACKEND_PARAMS = {}
+IMAGE_CROPPING_THUMB_SIZE = (300, 300)
+IMAGE_CROPPING_SIZE_WARNING = True
+IMAGE_CROPPING_BACKEND = 'image_cropping.backends.easy_thumbs.EasyThumbnailsBackend'
+IMAGE_CROPPING_BACKEND_PARAMS = {"width":"300px","height":"300px"}
+IMAGE_CROPPING_THUMB_SIZE = (300, 300)
 
 AUTH_USER_MODEL = 'accounts.User'
 
@@ -88,7 +94,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'truevalues.wsgi.application'
+ASGI_APPLICATION = 'truevalues.asgi.application'
 
 
 # Database

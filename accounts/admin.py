@@ -6,6 +6,11 @@ from accounts.models import User
 # admin.site.register(User)
 
 class UserAdmin(ImageCroppingMixin, admin.ModelAdmin):
-    pass
+    fieldsets = (
+        (None, {'fields': ('email', 'password')}),
+        ('Personal info', {'fields': ('first_name', 'last_name', 
+        'mobile', 'address',  
+         'user_image', 'cropping')}),
+    )
 
 admin.site.register(User, UserAdmin)

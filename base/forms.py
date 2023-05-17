@@ -17,6 +17,4 @@ class ProfileImageForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('user_image',)
-        widgets = {
-            'user_image': ImageCropWidget,
-        }
+        

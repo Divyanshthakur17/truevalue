@@ -7,6 +7,8 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.db.models import Q
 from .forms import CarCommentForm
 from django.http import HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
+from accounts.models import User
 
 # Create your views here.
 def NewCarViews(request):
@@ -149,9 +151,9 @@ def cartview(request):
         }
         return render(request,"cars/addtocart.html",context)
 
-
 def wishlist(request):
     user = request.user
+    print(user)
     if user.is_authenticated:
         wishlist = WishItem.objects.get(user = request.user)
         cars = wishlist.cars.all()
@@ -161,8 +163,8 @@ def wishlist(request):
             "cars":cars
         }
         return render(request,"cars/wishlist.html", context)
-    else:
-        return redirect("home")
+    return render(request,'accounts/signup.html')
+
 
 def addToWishlist(request):
     if request.method == "POST":

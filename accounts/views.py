@@ -65,14 +65,10 @@ def sign_out(request):
     messages.info(request, "Logged out successfully!")
     return redirect("home")
 
-def user_profile(request):
-    return render(request,'accounts/user_profile.html')
 
 global_var = 0
 
 def password_reset_request(request):
-    
-    
     if request.method == "POST":
         password_reset_form = PasswordResetForm(request.POST)
         print(request.POST)

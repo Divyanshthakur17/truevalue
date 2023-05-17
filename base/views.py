@@ -6,7 +6,7 @@ from . forms import CommentForm , ProfileImageForm
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from accounts.models import User
-
+from django.http import JsonResponse
 
 
 # Create your views here.
@@ -152,24 +152,20 @@ def user_profile_view(request):
 
     if user.is_authenticated:
         cars = UsedCars.objects.filter(user= user.id)
-        
-        print(request.POST, "_____________")
-        print(request.FILES, "---------------")
-        if request.method == 'POST':
-            form = ProfileImageForm()
-        
-            if form.is_valid():
-                image.user_image.delete() 
-                # image_path = image.user_image.path
-                # print(image_path)
-                # if os.path.exists(image_path):
-                #     os.remove(image_path)
-                form.save()
-                
-                return render(request,"base/user_profile.html", {'cars':cars,"image":image,"form":form })
         form = ProfileImageForm()
-        print(cars)
-        return render(request,"base/user_profile.html", {'cars':cars,"image":image,"form":form} )
+        if request.method == 'POST':
+            img = request.FILES.get('file')
+            print(img,'___________________________')
+       
+            image.user_image = img
+            image.save()
+            # form.save()
+            # return JsonResponse({'message': 'works'})    
+            return redirect('user_profile')
+        
+        return render(request,"base/user_profile.html", {'cars':cars,"image":image,"form":form })
+        
+        # return render(request,"base/user_profile.html", {'cars':cars,"image":image,"form":form} )
     else:
         return redirect("signin ")
     

@@ -8,7 +8,7 @@ class User(AbstractUser):
     username = None
     user_image = models.ImageField(upload_to="user/", blank=True, null=True)
     # crop_user_image = ImageCropField(blank=True,upload_to="user/")
-    cropping = ImageRatioField('user_image', '400x400')
+    cropping = ImageRatioField('user_image', '300x300', size_warning=True)
     user_coverimage = models.ImageField(upload_to="user/", blank=True, null=True)
     email = models.EmailField(unique=True)
     mobile = models.CharField(max_length=10, unique=True)
