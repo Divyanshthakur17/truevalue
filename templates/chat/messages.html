@@ -318,6 +318,15 @@
     </head>
 	<!--Coded With Love By Mutiullah Samim-->
 	<body>
+    {% if user.is_authenticated %}
+    
+        <input type="hidden" id="logged-in-user" value="{{user.id }}">
+    {% endif %}
+        <h1>Logged in as : {{user.first_name}}</h1>
+        {{user.id}}
+    {{user.id}}
+    {{user.id}}
+    {{user.id}}
 		<div class="container-fluid h-100">
 			<div class="row justify-content-center h-100 ">
 				<div class="col-md-4 col-xl-3 chat h-100 mt-4">

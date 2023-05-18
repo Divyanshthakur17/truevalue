@@ -68,17 +68,18 @@
                             <li class=" {% if request.path == url %}active{% endif %}"><a href="{{url}}">Contact</a></li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right" style="margin-top: 0;">
-                        {% if user.is_authenticated %}
+                        {% if user.is_authenticated %}  
                             {% url 'logout' as url %}
                             <li style="cursor: pointer;" ><a onclick="getCurrentURL()">Logout</a></li>
-                            {% url 'wishlist' as url %}
+                            {% url 'wishlist' as url %} 
                             <li class=" {% if request.path == url %}active{% endif %}"><a href="{{url}}">Wishlist</a></li>
                             <!-- {% url 'user_profile' as url %}
-                            <li class=" {% if request.path == url %}active{% endif %}">  <a href="{{url }}"><img src="{% static 'assets/images/images (1).png' %}" width="50" alt=""></a></li>
-                            {% url 'user_profile' as url %} -->
+                            <li class=" {% if request.path == url %}active{% endif %}">  <a href="{{url }}"><img src="{% static 'assets/images/images (1).png' %}" width="50" alt=""></a></li> -->
+                            {% url 'user_profile' as url %}
                             <li class=" {% if request.path == url %}active{% endif %}">  <a href="{{url }}">WELCOME    {{user.first_name}}</a></li>
                             
 			            {% else %}
+                            <li><h1 style="color:#000">{{user}}</h1></li>
                             {% url 'register' as url %}
                             <li class=" {% if request.path == url %}active{% endif %}"><a href="{{url}}">Signup</a></li>
                             {% url 'signin' as url %}
@@ -93,9 +94,7 @@
         <!-- Sub-eader -->
         <div class="container">
             <div class="header">
-                <a href="https://www.free-css.com/free-css-templates">
-                    <img src="{% static 'assets/images/logo1.png' %}" width="200px" height="60px" alt="website template image">
-                </a>
+                <img src="{% static 'assets/images/logo1.png' %}" width="200px" height="60px" alt="website template image">
                 <ul class="pull-right">
                     <li><a href="{% url 'newcars'  %}">New Cars</a></li>
                     <li><a href="{% url 'usedcars'  %}">Used Cars</a></li>

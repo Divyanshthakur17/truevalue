@@ -161,3 +161,11 @@ MEDIA_URL = '/media/'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND':'channels.layers.InMemoryChannelLayer',
+        # 'CONFIG': {
+        #     'hosts':[('127.0.0.1', 8000)],
+        # }
+    }
+}

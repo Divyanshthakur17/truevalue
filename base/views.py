@@ -25,6 +25,7 @@ def index(request):
     about = About.objects.get(id=1)
     
     if type == "New":
+        s = 'newcars'
         if search:
             cars = NewCars.objects.filter(Q(car_name__icontains=search) | Q(body_type__icontains=search) | Q(color__icontains=search)) 
         
@@ -34,7 +35,7 @@ def index(request):
         if body_type:
             cars = cars.filter(body_type = body_type)
 
-        return render(request,'cars/newcars.html', {"cars":cars,"search":search,"price":price,"Body Type": body_type})
+        return render(request,'cars/newcars.html', {"cars":cars,"search":search,"price":price,"Body Type": body_type, 's':s})
     
     elif type == "Used":
         cars = usedcars

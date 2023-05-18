@@ -79,7 +79,11 @@
     <div class="searchbar">
       <div class="row">
         <div class="col-lg-6 col-sm-6">
-          <form action="" method="get">
+          {% if s == 'newcars' %}
+          <form action="{% url 'usedcars' %}" method="get">
+          {% else %}
+          <form action="/" method="get">
+          {% endif %}
             {% csrf_token %}
             <input type="text" class="form-control" name="search" value="{{search}}" placeholder="Search of Cars">
             <div class="row">

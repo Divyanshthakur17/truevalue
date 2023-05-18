@@ -73,6 +73,7 @@ def NewCarViews(request):
 
 
 def UsedCarViews(request):
+    
     # for sort filter
     search = request.GET.get('usedsearch', "")
     ordering = request.GET.get('ordering', "")
@@ -111,7 +112,14 @@ def UsedCarViews(request):
     except EmptyPage:
         # if the page is out of range, deliver the last page
         cars = p.page(p.num_pages)
-    context = {"cars": cars, "page_obj": cars}
+    context = {
+        "cars": cars,
+        "page_obj": cars, 
+        'search':search,
+        'buy_year':buy_year,
+        'price':price,
+        'km':kilometer_run
+    }
     return render(request, "cars/usedcars.html", context)
 
 
@@ -152,18 +160,16 @@ def cartview(request):
         return render(request,"cars/addtocart.html",context)
 
 def wishlist(request):
-    user = request.user
-    print(user)
-    if user.is_authenticated:
-        wishlist = WishItem.objects.get(user = request.user)
-        cars = wishlist.cars.all()
-   
+    current_user = request.user
+    print(current_user)
+    if current_user.is_authenticated:
+        cars = WishItem.objects.get(user=current_user).cars.all()
         context ={
-            "user":wishlist,
+            'user': current_user,
             "cars":cars
         }
         return render(request,"cars/wishlist.html", context)
-    return render(request,'accounts/signup.html')
+    
 
 
 def addToWishlist(request):
@@ -193,14 +199,22 @@ def addCars(request):
     models = Model.objects.all()
 
     if request.method == 'POST':
-        # if "image_1" in request.FILES:
-        image_1 = request.FILES['image_1']
-        # if "image_2" in request.FILES:
-        image_2 = request.FILES['image_2']
-        image_3 = request.FILES['image_3']
-        image_4 = request.FILES['image_4']
-        image_5 = request.FILES['image_5']
-        image_6 = request.FILES['image_6']
+        if "image_1" in request.FILES:
+            image_1 = request.FILES['image_1']
+        if "image_2" in request.FILES:
+            image_2 = request.FILES['image_2']
+        if "image_3" in request.FILES:
+            image_3 = request.FILES['image_3']
+            image_3=image_3
+        if "image_4" in request.FILES:
+            image_4 = request.FILES['image_4']
+            image_4=image_4
+        if "image_5" in request.FILES:
+            image_5 = request.FILES['image_5']
+            image_5=image_5
+        if "image_6" in request.FILES:
+            image_6 = request.FILES['image_6']
+            image_6=image_6
         carname = request.POST.get('carname')
      
         brand = request.POST.get('brand', "")
@@ -228,7 +242,7 @@ def addCars(request):
         else:
             dent = False
 
-        car =UsedCars(image_1=image_1,image_2=image_2, image_3=image_3,image_4=image_4,image_5=image_5,image_6=image_6,usedcar_name=carname,brand=brand,model=model,user=user,fuel_type=fuel_type,milege=milege,dent=dent,kilometer_run=kilometer_run,buy_year=buy_year,demand=demand,phone_no=phone,used_car_detail=car_desc)
+        car =UsedCars(image_1=image_1,image_2=image_2, usedcar_name=carname,brand=brand,model=model,user=user,fuel_type=fuel_type,milege=milege,dent=dent,kilometer_run=kilometer_run,buy_year=buy_year,demand=demand,phone_no=phone,used_car_detail=car_desc)
         car.save()
     context = {
         'brands':brands,
