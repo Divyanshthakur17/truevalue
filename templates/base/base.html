@@ -79,7 +79,6 @@
                             <li class=" {% if request.path == url %}active{% endif %}">  <a href="{{url }}">WELCOME    {{user.first_name}}</a></li>
                             
 			            {% else %}
-                            <li><h1 style="color:#000">{{user}}</h1></li>
                             {% url 'register' as url %}
                             <li class=" {% if request.path == url %}active{% endif %}"><a href="{{url}}">Signup</a></li>
                             {% url 'signin' as url %}
@@ -270,7 +269,7 @@
 
 
    
-    <!-- <script type="text/javascript">
+    <script type="text/javascript">
         (function () {
             var bsa = document.createElement('script');
             bsa.type = 'text/javascript';
@@ -278,7 +277,7 @@
             bsa.src = '//s3.buysellads.com/ac/bsa.js';
             (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(bsa);
         })();
-    </script> -->
+    </script> 
     
 
     <script type="text/javascript">

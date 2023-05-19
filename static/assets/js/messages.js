@@ -22,15 +22,14 @@ socket.onopen = async function(e){
     send_message_form.on('submit',function (e){
         e.preventDefault()
         let message = input_message.val()
-        let send_to;
-        if (USER_ID == '1')
-            send_to = 2
-        else
-            send_to = 1
+        let send_to = get_active_other_user_id()
+        let thread_id = get_active_thread_id()
+        
         let data = {
             'message':message,
             'sent_by':USER_ID,
-            'send_to':send_to
+            'send_to':send_to,
+            'thread_id':thread_id
         }
         data = JSON.stringify(data)
         socket.send(data)
@@ -43,7 +42,9 @@ socket.onmessage = async function(e){
     let data = JSON.parse(e.data)
     let message = data['message']
     let sent_by_id = data['sent_by']
-    newMessage(message, sent_by_id)
+    let thread_id = data['thread_id']
+
+    newMessage(message, sent_by_id, thread_id)
 }
 
 socket.onerror = async function(e){
@@ -53,12 +54,14 @@ socket.onclose = async function(e){
     console.log('close', e)
 }
 
-function newMessage(message, sent_by_id) {
+function newMessage(message, sent_by_id, thread_id) {
 	if ($.trim(message) === '') {
 		return false;
 	}
-debugger
+
     let message_element;
+    let chat_id = 'chat_' + thread_id
+    console.log(chat_id)
 
     if (sent_by_id == USER_ID ) {
         message_element = `
@@ -87,11 +90,33 @@ debugger
         `
     }
     
-	message_body.append($(message_element))
+    let message_body = $('.messages-wrapper[chat-id="'+ chat_id +'"] .msg_card_body')
+	    message_body.append($(message_element))
     message_body.animate({
         scrollTop: $(document).height()
     }, 100);
 	input_message.val(null);
 }
 
+$('.contact-li').on('click', function(){
+    $('.contacts .active').removeClass('active')
+    $(this).addClass('active')
+    debugger
+    let chat_id = $(this).attr('chat-id')
+    $('.messages-wrapper.is_active').removeClass('is_active')
+    $('.messages-wrapper[chat-id"' + chat_id +'"]').addClass('is_active')
+    console.log($('.messages-wrapper[chat-id"' + chat_id +'"]').addClass('is_active'))
+})
 
+function get_active_other_user_id(){
+    let other_user_id =$('.messages-wrapper.is_active').attr('other-user-id')
+    console.log(other_user_id)
+    other_user_id = $.trim(other_user_id)
+    return other_user_id
+}
+
+function get_active_thread_id(){
+    let chat_id =$('.messages-wrapper.is_active').attr('chat-id')
+    let thread_id = chat_id.replace('chat_', '')
+    return thread_id
+}

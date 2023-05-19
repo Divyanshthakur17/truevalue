@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
 
 urlpatterns = [
@@ -13,4 +13,5 @@ urlpatterns = [
     path('addcars/',views.addCars, name = "addcars"),
     path('ajax/load-models/', views.load_models, name='ajax_load_models'),
     path('cropcar/', views.cropcar, name='cropcar'),
+    path("",include('chat.urls'))
 ]

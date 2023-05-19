@@ -1,12 +1,8 @@
 import json
 from channels.consumer import AsyncConsumer
 from channels.db import database_sync_to_async
-# from django.contrib.auth import get_user_model
-# from django.conf import settings
-# User = settings.AUTH_USER_MODEL
 from accounts.models import User
-# User = get_user_model()
-# print(get_user_model())
+from chat.models import Thread, ChatMessage
 print('_______************__________')
 
 class Chatconsumer(AsyncConsumer):
@@ -29,24 +25,35 @@ class Chatconsumer(AsyncConsumer):
         msg = received_data.get('message')
         sent_by_id = received_data.get('sent_by')
         send_to_id = received_data.get('send_to')
+        print(send_to_id,"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
+        thread_id = received_data.get('thread_id')
+
         if not msg:
             print('Error:: empty message ')
             return False
         
         sent_by_user = await self.get_user_object(sent_by_id)
+        print("_______________!!!!___________")
         send_to_user = await self.get_user_object(send_to_id)
-        
+        print(send_to_user, "*****************************")
+        thread_obj = await self.get_thread(thread_id)
+        print(thread_obj,'-------------------------------')
         if not sent_by_user:
             print('Error:: Sent by user is incorrect')
         if not send_to_user:
             print('Error:: Send to user is incorrect')
-
+        if not thread_obj:
+            print('Error:: Thread id is incorrect')
+        
+        await self.create_chat_message(thread_obj, sent_by_user, msg)
+        print("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
         other_user_chat_room = f'user_chatroom_{send_to_id}'
         self_user = self.scope['user']
 
         response = {
             'message':msg,
-            'sent_by':self_user.id
+            'sent_by':self_user.id,
+            'thread_id':thread_id
         }
         await self.channel_layer.group_send(
             other_user_chat_room,
@@ -84,3 +91,22 @@ class Chatconsumer(AsyncConsumer):
         else:
             obj = None
         return obj
+    
+    @database_sync_to_async
+    def get_thread(self, thread_id):
+        print('*********************************************************************__________________')
+        qs = Thread.objects.filter(id = thread_id)
+        if qs.exists():
+            obj = qs.first()
+        else:
+            obj = None
+        print('thread::',obj)
+        return obj
+    
+    @database_sync_to_async
+    def create_chat_message(self, thread, user, msg):
+        print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+        print(thread)
+        print(user)
+        print(msg)
+        ChatMessage.objects.create(thread=thread, user=user, message= msg)

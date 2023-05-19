@@ -63,7 +63,7 @@
           <H3>BUY YEAR<span>{{car.buy_year}}</span></H3>
           <H3>DEMAND<span>{{car.demand}}</span></H3>
           <H3>OWNER<span>{{car.owner}}</span></H3>
-          <H3>PHONE NO<span>{{car.phone_no}}</span></H3>
+          <button>For Chat   <a href="{% url 'send_msg' car.id %}">  Click Here</a></button>
         </div>
         <br>
         <br>
