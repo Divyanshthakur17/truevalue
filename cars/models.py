@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils import timezone
 from accounts.models import User
+from indian_cities.dj_city import cities
+
 # Create your models here.
 
 
@@ -20,6 +22,18 @@ class Model(models.Model):
     def __str__(self):
         return self.model_name + "---" + self.brand.brand_name
 
+class State(models.Model):
+    states = models.CharField(max_length=100 , null=True, blank=True )
+    
+    def __str__(self) -> str:
+        return self.states
+
+class Cities(models.Model):
+    state = models.ForeignKey(State,on_delete=models.CASCADE, blank=True, null=True)
+    cities = models.CharField(max_length=100, choices=cities, null=True, blank=True)
+
+    def __str__(self) -> str:
+        return self.cities
 
 class NewCars(models.Model):
     image_1 = models.ImageField(upload_to='images/')
@@ -70,6 +84,8 @@ class UsedCars(models.Model):
     owner = models.CharField(max_length=100)
     phone_no = models.CharField(max_length=10)
     used_car_detail = models.TextField(blank=True, null=True)
+    states = models.ForeignKey(State, on_delete=models.CASCADE, null=True, blank=True)
+    cities = models.ForeignKey(Cities, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return self.brand.brand_name
@@ -96,5 +112,4 @@ class WishItem(models.Model):
         return self.user.first_name
     
 
-class Divyansh(models.Model):
-    img=models.ImageField(upload_to='divyansh/')
+

@@ -101,11 +101,13 @@ function newMessage(message, sent_by_id, thread_id) {
 $('.contact-li').on('click', function(){
     $('.contacts .active').removeClass('active')
     $(this).addClass('active')
-    debugger
+    
+   
+    // message wrappers
     let chat_id = $(this).attr('chat-id')
     $('.messages-wrapper.is_active').removeClass('is_active')
-    $('.messages-wrapper[chat-id"' + chat_id +'"]').addClass('is_active')
-    console.log($('.messages-wrapper[chat-id"' + chat_id +'"]').addClass('is_active'))
+    $('.messages-wrapper[chat-id="' + chat_id +'"]').addClass('is_active')
+
 })
 
 function get_active_other_user_id(){

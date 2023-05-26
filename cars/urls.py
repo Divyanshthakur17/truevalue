@@ -12,6 +12,5 @@ urlpatterns = [
     path('delete-from-wishlist/',views.deleteFromWishlist, name = "remove-from-wishlist"),
     path('addcars/',views.addCars, name = "addcars"),
     path('ajax/load-models/', views.load_models, name='ajax_load_models'),
-    path('cropcar/', views.cropcar, name='cropcar'),
-    path("",include('chat.urls'))
+    path('ajax/load-cities/', views.load_cities, name='ajax_load_cities'),
 ]

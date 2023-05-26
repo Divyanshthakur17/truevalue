@@ -21,6 +21,8 @@ class Thread(models.Model):
     
     class Meta:
         unique_together =['first_person', 'second_person']
+    
+
 
 class ChatMessage(models.Model):
     thread = models.ForeignKey(Thread, null=True, blank=True, on_delete=models.CASCADE, related_name= 'chatmessage_thread')

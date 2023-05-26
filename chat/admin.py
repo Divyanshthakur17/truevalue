@@ -24,6 +24,7 @@ class ChatMessage(admin.TabularInline):
 #         if qs.exists():
 
 class ThreadAdmin(admin.ModelAdmin):
+    list_display = ('first_person','second_person')
     inlines = [ChatMessage]
     class Meta:
         model = Thread

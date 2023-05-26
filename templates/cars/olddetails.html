@@ -63,7 +63,9 @@
           <H3>BUY YEAR<span>{{car.buy_year}}</span></H3>
           <H3>DEMAND<span>{{car.demand}}</span></H3>
           <H3>OWNER<span>{{car.owner}}</span></H3>
-          <button>For Chat   <a href="{% url 'send_msg' car.id %}">  Click Here</a></button>
+          {% if request.user != car.user %}
+          <button>For Chat   <a href="/chat/?car_id={{car.id}}">  Click Here</a></button>
+          {% endif %}
         </div>
         <br>
         <br>

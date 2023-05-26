@@ -1,14 +1,16 @@
 from django.shortcuts import render,get_object_or_404,redirect
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 from django.urls import reverse
-from .models import NewCars, UsedCars,Commentcars, Cart,WishItem, Brand , Model, Divyansh
-from django.http import JsonResponse
+from .models import NewCars, UsedCars,Commentcars, Cart,WishItem, Brand , Model,State, Cities
+from django.http import JsonResponse,HttpResponse
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db.models import Q
 from .forms import CarCommentForm
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from accounts.models import User
+import json
+from django.http import HttpRequest
 
 # Create your views here.
 def NewCarViews(request):
@@ -21,7 +23,6 @@ def NewCarViews(request):
 
     cars = NewCars.objects.all()
     
-
     if search:
         cars = NewCars.objects.filter(Q(car_name__icontains=search) | Q(body_type__icontains=search) | Q(color__icontains=search)) 
 
@@ -59,7 +60,15 @@ def NewCarViews(request):
         print('Has not been clicked')
     
         
-    context = {"cars": cars, "page_obj": cars, "search":search,"body_type":body_type,"milege":milege, "price":price, "ordering":ordering}
+    context = {
+        "cars": cars, 
+        "page_obj": cars, 
+        "search":search,
+        "body_type":body_type,
+        "milege":milege, 
+        "price":price, 
+        "ordering":ordering
+        }
     return render(request, "cars/newcars.html", context)
 
 
@@ -73,36 +82,78 @@ def NewCarViews(request):
 
 
 def UsedCarViews(request):
-    
-    # for sort filter
-    search = request.GET.get('usedsearch', "")
+    cars = UsedCars.objects.filter()
     ordering = request.GET.get('ordering', "")
-    price = request.GET.get('price', "")
-    kilometer_run = request.GET.get('kilometer_run', "")
-    buy_year = request.GET.get('buy_year', "")
-  
-    cars = UsedCars.objects.all()
-    
-
-    if search:
-        cars = UsedCars.objects.filter(Q(usedcar_name__icontains=search) | Q(fuel_type__icontains=search)) 
-
     if ordering:
-        cars = cars.order_by(ordering)
-    
-    if price:
-        cars = cars.filter(demand__lt = price)
+            cars = cars.order_by(ordering)
         
-    if kilometer_run:
-        cars = cars.filter(kilometer_run__lt = kilometer_run)
+    states = State.objects.all()
+    
+    
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest' and request.method == 'GET':
+        print('ajax-------------------------')
+    # if request.headers.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest" and request.method == 'GET':
+        print('ajax-------------------------')
+        search = request.GET.get('usedsearch', "")
+        
+        price = request.GET.get('price', "")
+        city = request.GET.get('cities', "")
+        state = request.GET.get('states', "")
+  
+        dumps = []
+        
+    
 
-    if buy_year:
-        cars = cars.filter(buy_year = buy_year)
+
+        if search:
+            cars = UsedCars.objects.filter(Q(usedcar_name__icontains=search) | Q(fuel_type__icontains=search)) 
+
         
-    
+        if price:
+            cars = cars.filter(demand__lt = price)
+            
+        if city:
+            cars = cars.filter(cities__cities = city)
+
+        if state:
+            cars = cars.filter(states__states = state)
+            # print(cars,"-----------------------------")
+        
+        # cars = cars.values('')
+        # context = {
+        #     'search':search,
+        #     'price':price,
+        #     'city':city,
+        #     'state':state,
+        #     'cars':cars
+        # }
+        for car in cars:
+        #     br = Brand.objects.get(id=car.brand_id).brand_desc
+        #     setattr(car,"brandname",br)
+        #     print(car.brandname)
+        # print(cars[0].brandname)    
+        # print(cars.values())
+        # cars = cars.values()
+            data = {
+                'brand_name':car.brand.brand_name,
+                'image_1':str(car.image_1),
+                'demand':car.demand,
+                'model':car.model.model_name,
+                'first_name':car.user.first_name,
+                'car_id':car.id,
+                'user':str(car.user),
+                'logged_user':str(request.user)
+                # 'cars':list(cars),
+                # 'page_obj':list(cars),
+            }
+            dumps.append(data)
+            context = {'cars':dumps}
+        
+        return JsonResponse(context)
+        # return HttpResponse(json.dumps({"cars":carss}))
     page_number = request.GET.get('page', 1)
     
-    p = Paginator(cars,2)
+    p = Paginator(cars,1)
     page_number = request.GET.get('page')
     try:
         cars = p.page(page_number)
@@ -112,13 +163,13 @@ def UsedCarViews(request):
     except EmptyPage:
         # if the page is out of range, deliver the last page
         cars = p.page(p.num_pages)
+    
+
     context = {
         "cars": cars,
-        "page_obj": cars, 
-        'search':search,
-        'buy_year':buy_year,
-        'price':price,
-        'km':kilometer_run
+        "page_obj": cars,
+        'ordering':ordering,
+        'states':states
     }
     return render(request, "cars/usedcars.html", context)
 
@@ -130,9 +181,12 @@ def cardetail(request,pk):
     return render(request,'cars/details.html',{'car':detail})
 
 
-
+global_car_id = 0
 
 def usedcardetail(request,pk):
+    global global_car_id
+    global_car_id = int(pk)
+    print(global_car_id)
     car = get_object_or_404(UsedCars,pk = pk)
     comments = Commentcars.objects.filter(usedcar=car)
     if request.method == "POST":
@@ -256,14 +310,13 @@ def load_models(request):
     models = Model.objects.filter(brand__brand_name=brand_name).order_by('model_name')
     return render(request, 'cars/addcars_model_dropdown_list_options.html', {'models': models})
 
+def load_cities(request):
+    state_name = request.GET.get('states')
+    print(state_name)
+    cities = Cities.objects.filter(state__states=state_name).order_by('cities')
+    print(cities)
+    return render(request, 'cars/usedcars_model_dropdown.html', {'cities': cities})
 
-def cropcar(request):
-    if request.method == 'POST':
-        image = request.FILES['user_image']
 
-        user = Divyansh(image_1 =image)
-        context={
-            'user':user
-        }
-        return render(request,'cars/cropcar.html', context)
-    return render(request,'cars/cropcar.html')
+
+

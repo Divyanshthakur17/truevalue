@@ -16,25 +16,21 @@
             <div class="col-lg-3 col-sm-4">
                 <div class="search-form">
                     <h4><span class="glyphicon glyphicon-search"></span> Search for <a style="margin-left: 5rem;" href="{% url 'usedcars' %}">Reset</a></h4>
-                    <form  method="get">
-                        <input type="text" class="form-control" name="usedsearch" value="{{search}}" placeholder="Search of cars">
+
+
+                    <form  method="get" id="UsedCarForm" data-cities-url="{% url 'ajax_load_cities' %}">
+                        <input type="text" class="form-control" name="usedsearch" value="{{search}}" id="search" placeholder="Search of cars">
                         <div class="row">
                             <div class="col-lg-5">
-                                <select name="buy_year" class="form-control"  style="margin-left: auto;">
-                                    <option  disabled selected hidden>Buy Year</option>
-                                    <option  value="2015" {% if buy_year == '2015' %}selected{% endif %}>2015</option>
-                                    <option  value="2016" {% if buy_year == '2016' %}selected{% endif %}>2016</option>
-                                    <option  value="2017" {% if buy_year == '2017' %}selected{% endif %}>2017</option>
-                                    <option  value="2018" {% if buy_year == '2018' %}selected{% endif %}>2018</option>
-                                    <option  value="2019" {% if buy_year == '2019' %}selected{% endif %}>2019</option>
-                                    <option  value="2020" {% if buy_year == '2020' %}selected{% endif %}>2020</option>
-                                    <option  value="2021" {% if buy_year == '2021' %}selected{% endif %}>2021</option>
-                                    <option  value="2022" {% if buy_year == '2022' %}selected{% endif %}>2022</option>
-                                    <option  value="2023" {% if buy_year == '2023' %}selected{% endif %}>2023</option>
+                                <select id="states" name="states" class="form-control"  style="margin-left: auto;">
+                                    <option  disabled selected hidden>State</option>
+                                    {% for state in states %}
+                                    <option id="{{state.id}}" value="{{state}}" {% if state.states == stateval %} selected {% endif %}>{{state}}</option>
+                                    {% endfor %}
                                 </select>
                             </div>
                             <div class="col-lg-7">
-                                <select name="price" class="form-control"  style="margin-left: auto;">
+                                <select name="price" id="price" class="form-control"  style="margin-left: auto;">
                                     <option  disabled selected hidden>Price</option>
                                     <option  value="500000" {% if price == '500000' %}selected{% endif %}>less than 5Lakh</option>
                                     <option  value="1000000" {% if price == '1000000' %}selected{% endif %}>less than 10Lakh</option>
@@ -45,16 +41,12 @@
                         </div>
                         <div class="row">
                             <div class="col-lg-12">
-                                <select name="kilometer_run" class="form-control" style="margin-left: auto;">
-                                    <option  disabled selected hidden>Kilometer Run</option>
-                                    <option  value="50000" {% if km == '50000' %}selected{% endif %}>less than 50000</option>
-                                    <option  value="100000" {% if km == '100000' %}selected{% endif %}>less than 100000</option>
-                                    <option  value="200000" {% if km == '200000' %}selected{% endif %}>less than 200000</option>
-                                    <option  value="500000" {% if price == '500000' %}selected{% endif %}>less than 500000</option>
+                                <select name="cities" id="cities" class="form-control" style="margin-left: auto;">
+                                    <option  disabled selected hidden>City</option>
                                 </select>    
                             </div>
                         </div>
-                        <button class="btn btn-primary" type="submit">Find Now</button>
+                        <button class="btn btn-primary"  onmouseover="getvalue()">Find Now</button>
                     </form>
                 </div>
             </div>
@@ -70,7 +62,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" id="carsid">
                     {% for car in cars %}
                     <div class="col-lg-4 col-sm-6">
                         <div class="properties">
@@ -85,7 +77,7 @@
                                 <a class="btn btn-primary" style="font-size: large;" href="{% url 'useddetails' car.id %}">View Details</a>
                                 
                                 
-                                {%if request.user != car.user %}
+                                {% if request.user != car.user %}
                                 <form action="{% url 'add-to-wishlist' %}" method="POST">
                                     {% csrf_token %}
                                     <input type="hidden" name="car-id" value="{{car.id}}">
@@ -101,6 +93,7 @@
         </div>
     </div>
 </div>
+
 {% load cars_extras %}
 
 <div class="page1">
@@ -116,6 +109,109 @@
       {% endif %}
     </span>
   </div>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script>
+    $("#states").change(function () {
+      var url = $("#UsedCarForm").attr("data-cities-url");  // get the url of the `load_cities` view
+      var stateId = $(this).val();  // get the selected country ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'states': stateId       // add the country id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+          $("#cities").html(data);  // replace the contents of the city input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
+
+  <script type="text/javascript">
+    $(document).on('submit', '#UsedCarForm', function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: 'GET',
+            url: '{% url "usedcars" %}',
+            data:
+            {
+                usedsearch: $("#search").val(),
+                states: $("#states").val(),
+                price: $("#price").val(),
+                cities: $("#cities").val(),
+
+            },
+            
+            success: function (response) {
+                console.log(response.cars)
+                // alert('Saved');
+                data = response.cars
+               
+                $('#carsid').empty()
+
+                for(i=0;i< data.length;i++){
+                    console.log(i)
+                
+                    // $("#carsid").html(data); 
+                    $('#carsid ').append ( 
+                        `
+                        <div class="col-lg-4 col-sm-6">
+                            <div class="properties">
+                                <div class="image-holder"><img src="/media/${data[i].image_1}" width="300" height="168"
+                                    class="img-responsive" alt="website template image">
+                                    <div class="status sold">${data[i].first_name}</div>
+                                </div>
+                                <h4><a href="property-detail.html">${data[i].brand_name}</a></h4>
+                                <h2 style="font-size: small;">${data[i].model}</h2>
+                                <p class="price">${data[i].demand}</p>
+                                <div style="display: flex; gap: 1rem;">
+                                    <a class="btn btn-primary" style="font-size: large;" href="/cars/usedcars/${data[i].car_id}" >View Details</a>
+
+                                    <div id='content' style='display:none;'>
+                                        <input type="text" id ="logged_user" value="${data[i].logged_user == 'so' ? 'yes' : 'no'}">
+                                        <input type="text" id ="user" value="${data[i].user}">
+                                    </div>
+                                    
+                                    <form action="{% url 'add-to-wishlist' %}" method="POST">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="car-id" value="{{car.id}}">
+                                        <button style="background-color: blue; color: azure;"  type="submit">Add to Wishlist</button>
+                                    </form>
+                            
+                                      
+                                </div>
+                            </div>
+                        </div>
+                        `
+                    )
+                }
+                
+            }
+        })
+    });
+
+    function getvalue(){
+        var user = document.getElementById('user').value;
+        var loguser = document.getElementById('logged_user').value;
+        console.log(user)
+        console.log(loguser)
+        if( user != loguser){
+            document.getElementById("con").innerHTML +=
+            `
+            <form action="{% url 'add-to-wishlist' %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="car-id" value="{{car.id}}">
+                <button style="background-color: blue; color: azure;"  type="submit">Add to Wishlist</button>
+            </form>
+            `
+        }
+    }
+    
+
+    
+
+</script> 
   <script>
 
     function get(name) {
