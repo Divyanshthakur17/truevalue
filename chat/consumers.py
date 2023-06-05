@@ -3,6 +3,7 @@ from channels.consumer import AsyncConsumer
 from channels.db import database_sync_to_async
 from accounts.models import User
 from chat.models import Thread, ChatMessage
+from chat.tasks import send_notification
 print('_______************__________')
 
 class Chatconsumer(AsyncConsumer):
@@ -25,6 +26,7 @@ class Chatconsumer(AsyncConsumer):
         msg = received_data.get('message')
         sent_by_id = received_data.get('sent_by')
         send_to_id = received_data.get('send_to')
+        send_notification.delay(msg,sent_by_id,send_to_id)
         print(send_to_id,"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
         thread_id = received_data.get('thread_id')
 

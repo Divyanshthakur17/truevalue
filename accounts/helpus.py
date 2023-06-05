@@ -11,7 +11,7 @@ class Msghandler:
 
     def send_otp(self):
         account_sid = "AC53487abebac2e0f385e39fb19715ee42"
-        auth_token = "6332e61f01fe4a89d809fcaeccd9f40a"
+        auth_token = "40268a768d854bbde75860da4dff8138"
         client = Client(account_sid, auth_token)
         message = client.messages.create(
             body=f"Your OTP is : {self.otp}",

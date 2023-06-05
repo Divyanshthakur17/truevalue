@@ -1,16 +1,14 @@
 import os
-from django.shortcuts import render, get_object_or_404,redirect, HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404,redirect
 from .models import Agents, Blog, About,Contact,Comment
 from cars.models import NewCars,UsedCars
 from . forms import CommentForm , ProfileImageForm
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from accounts.models import User
-from django.http import JsonResponse
 
 
 # Create your views here.
-
 
 
 def index(request):
@@ -23,6 +21,7 @@ def index(request):
     cars = NewCars.objects.all()
     usedcars = UsedCars.objects.all()
     about = About.objects.get(id=1)
+    
     
     if type == "New":
         s = 'newcars'
@@ -48,11 +47,16 @@ def index(request):
 
         if body_type:
             cars = cars.filter(body_type = body_type)
-        print("-------##############--------")
+        
         return render(request,'cars/usedcars.html', {"cars":cars,"search":search,"price":price,"Body Type": body_type})
     else:
         print("---------------")
-        return render(request,'base/index.html',{"cars":cars,"usedcars":usedcars, "about":about} )
+        context = {
+            "cars":cars,
+            "usedcars":usedcars, 
+            "about":about, 
+            }
+        return render(request,'base/index.html',context )
 
 
 
@@ -128,23 +132,30 @@ def blogdetail(request,pk):
     return render(request,'base/blogdetail.html',context)
 
 
-
+from .helpus import Feedbackhandler
 
 def contact(request): 
     if request.method == 'POST':
         print("________")
         full_name = request.POST['full_name']
         email = request.POST['email']
-        contact = request.POST['contact']
+        phone = request.POST['contact']
         print("____________")
         message = request.POST['message']
-        contact = Contact(full_name=full_name,email=email,contact=contact,message=message) 
-        contact.save()
+        contact = Contact(full_name=full_name,email=email,contact=phone,message=message) 
+        contact.save() 
+        mobile  = '+91'+ phone
+        msg = Feedbackhandler(mobile,message)
+        msg.send_feedback()
+        
         context = {
             "success": True
         }
         return render(request,'base/contact.html',context)
     return render(request,'base/contact.html')
+
+def sendmsg():
+    return 'hello'
 
 def user_profile_view(request):
     user = request.user
@@ -210,3 +221,31 @@ def edit_profile(request):
         return render(request,'base/editprofile.html',context)
     return render(request,'accounts/signin.html')
 
+# API for AGENTS, BLOGS
+
+from rest_framework.viewsets import ModelViewSet
+from .serializers import AgentsSerializer,BlogsSerializer
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.permissions import IsAuthenticated, IsAdminUser, BasePermission
+
+class WriteByAdminOnlyPermission(BasePermission):
+    def has_permission(self, request, view):
+        print('insidnde has permission', request.user)
+        user = request.user
+        if request.method == 'GET':
+            return True
+
+        if request.method == 'POST' or request.method == 'PUT' or request.method == 'DELETE':
+            if user.is_superuser:
+                return True
+
+        return False
+class AgentViewsets(ModelViewSet):
+    permission_classes = [IsAuthenticated, WriteByAdminOnlyPermission]
+    queryset = Agents.objects.all()
+    serializer_class = AgentsSerializer
+
+class BlogViewsets(ModelViewSet):
+    permission_classes = [IsAuthenticated, WriteByAdminOnlyPermission]
+    queryset = Blog.objects.all()
+    serializer_class = BlogsSerializer

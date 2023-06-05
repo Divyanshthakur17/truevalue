@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 import os
 from pathlib import Path
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATE_DIR = os.path.join(BASE_DIR,'templates')
@@ -30,8 +29,6 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
-# Application definition
-
 INSTALLED_APPS = [
     'daphne',
     'django.contrib.admin',
@@ -40,6 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'rest_framework_simplejwt',
+    'rest_framework.authtoken',
 
     # custom apps
     'base',
@@ -48,11 +48,23 @@ INSTALLED_APPS = [
     'chat',
 
     # third parties app
+    'crispy_forms',
     'easy_thumbnails',
     'image_cropping',
+    'django_celery_beat',
 
-    
 ]
+
+REST_FRAMEWORK = {
+    # 'DEFAULT_PERMISSION_CLASSES': (
+    #     'base.permissions.IsSuperuser',    
+    # ),
+    
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication', 
+    )
+    
+}
 
 from easy_thumbnails.conf import Settings as thumbnail_settings
 THUMBNAIL_PROCESSORS = (
@@ -159,7 +171,12 @@ MEDIA_DIR = BASE_DIR / 'media'
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = '/media/'
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = ''
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
 
 CHANNEL_LAYERS = {
     'default': {
@@ -169,3 +186,11 @@ CHANNEL_LAYERS = {
         # }
     }
 }
+
+CELERY_BROKER_URL ='redis://127.0.0.1:6379'
+CELERY_RESULT_BACKEND ='redis://127.0.0.1:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER ='json'
+CELERY_TASK_SELERLIZER ='json'
+CELERY_TIMEZONE = 'Asia/Kolkata'
+

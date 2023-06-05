@@ -39,7 +39,7 @@
 <div class="inside-banner">
     <div class="container"><span class="pull-right"><a href="{% url 'home' %}">Home</a> /
             <a href="{% url 'wishlist' %}"></a>wishlist</span>
-        <h2>{{user}}'s Wishlist</h2>
+        <h2>{{user.first_name}}'s Wishlist</h2>
     </div>
 </div>
 {% if user.is_authenticated %}

@@ -15,6 +15,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'assets/css/slitslidercustom.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'assets/css/custom.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropper/4.1.0/cropper.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style type="text/css">
         #freecssfooter {
             display: block;
@@ -38,10 +39,19 @@
             float: none;
             margin: 0 auto;
         }
+        .flex-wrapper {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+        .footer{
+            margin-top: auto;
+        }
     </style>
 </head>
 
-<body>
+<body class="flex-wrapper">
     <header class="header">
         <div class="navbar-wrapper">
             <div class="navbar-inverse" role="navigation">
@@ -77,6 +87,16 @@
                             {% url 'user_profile' as url %}
                             <li class=" {% if request.path == url %}active{% endif %}">  <a href="{{url }}">WELCOME    {{user.first_name}}</a></li>
                             
+                            {% url 'notifications' as url %}
+                            <li id="notification-count"  data-toggle="modal" data-target=".bd-example-modal-sm">  <a href="{{url }}"><span class="notification-icon"><i class="fa fa-bell" style="font-size: 25px;"></i><span class="badge" style= "position: absolute;
+                                top: -10px;
+                                right: -10px;
+                                padding: 5px 10px;
+                                border-radius: 50%;
+                                background: red;
+                                color: white;" >{{ unread_count }}</span></span></a></li>
+                            
+                            
 			            {% else %}
                             {% url 'register' as url %}
                             <li class=" {% if request.path == url %}active{% endif %}"><a href="{{url}}">Signup</a></li>
@@ -89,7 +109,7 @@
             </div>
         </div>
         
-        <!-- Sub-eader -->
+        <!-- Sub-header -->
         <div class="container">
             <div class="header">
                 <img src="{% static 'assets/images/logo1.png' %}" width="200px" height="60px" alt="website template image">
@@ -101,10 +121,11 @@
         </div>
     </header>
 
+    {% include 'chat/notifications.html'%}
 
-
-    {% block content %}{% endblock %}
-
+    {% block content %}
+   
+    {% endblock %}
 
     <footer class="footer">
         <div class="container">
@@ -200,6 +221,8 @@
     <script src="{% static 'assets/js/jquery.slitslider.js' %}"></script>
     <script src="{% static 'assets/js/notiflix.js' %}"></script>
     
+
+    
     <script>
         const alertBox = document.getElementById('alert-box')
         const imageBox = document.getElementById('image-box')
@@ -265,7 +288,7 @@
         })
     </script>
    
-
+  
 
    
     <script type="text/javascript">

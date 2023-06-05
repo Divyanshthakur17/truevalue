@@ -21,4 +21,10 @@ class User(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
+class Export(models.Model):
+    file = models.FileField(
+        upload_to='files/', verbose_name="Fichiers Excel"
+    )
 
+    def __str__(self):
+        return self.file

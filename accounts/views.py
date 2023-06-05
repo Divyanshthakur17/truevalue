@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.auth import  authenticate,login,logout
 from django.urls import reverse
 from .forms import SignupForm 
+# from accounts.models import User
 from django.contrib.auth import get_user_model
 from django.db.models.query_utils import Q
 from django.contrib.auth.forms import PasswordResetForm
@@ -12,35 +13,56 @@ from django.utils.http import urlsafe_base64_encode
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_bytes
 from django.core.mail import send_mail, BadHeaderError
-from django.http import HttpResponse
+from django.http import HttpResponse,JsonResponse
 from django.template.loader import render_to_string
 from django.utils.crypto import get_random_string
 from .helpus import Msghandler
 import json
+from geopy.geocoders import Nominatim
+from django.views import View
+
 # Create your views here.
 User = get_user_model()
 
-def sign_up(request):
-    if request.method == "POST":
-        form = SignupForm(request.POST)
+class Signup(View):
+    def get(self,request):
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest' and request.method == 'GET':
+            latitude = float(request.GET.get('latitude'))
+            longitude = float(request.GET.get('longitude'))
+            context = self.get_address(latitude,longitude)    
+            return JsonResponse(context)
+        form = SignupForm()
+        return render(request, "accounts/signup.html", {"form": form})
+    
+    def post(self,request):
+        form = SignupForm(self.request.POST)
         print(request.POST)
         if form.is_valid():
-            print('******')
             user = form.save()
-            print(user)
             login(request, user)
             messages.success(request, "Registration successful." )
             return redirect("home")
         messages.error(request, "Unsuccessful registration. Invalid information.")
-    # if a GET (or any other method) we'll create a blank form
-    else:
-        form = SignupForm()
 
-    return render(request, "accounts/signup.html", {"form": form})
+    def get_address(self,latitude,longitude):
+        dumps = []
+        geolocator = Nominatim(user_agent="accounts")
+        a = list()
+        a.append(latitude)
+        a.append(longitude)
+        location = geolocator.reverse(a)
+        dumps.append(str(location))
+        context = {
+            'address':dumps
+        }
+        return context
 
-def sign_in(request):
+
+class SignIn(View):
+    def get(self,request):
+        return render(request, "accounts/signin.html")
     
-    if request.method == "POST":
+    def post(self,request):
         resp = {'status':'failed'}
         username = request.POST["email"]
         password = request.POST["password"]
@@ -51,14 +73,13 @@ def sign_in(request):
             user = authenticate(username=username, password=password)
         if user:
             login(request,user)
-            
+                        
             resp['status'] = 'success'
 
         else:
             resp['status'] = 'failed'
         return HttpResponse(json.dumps(resp),content_type = 'application/json')
-    else:   
-        return render(request, "accounts/signin.html")
+
 
 def sign_out(request):
     logout(request)
@@ -76,37 +97,37 @@ def password_reset_request(request):
         
         otp = get_random_string(6, allowed_chars='123456789')
         global_var = int(otp)
+        
         if password_reset_form.is_valid():
             data = password_reset_form.cleaned_data['email']
             user = User.objects.get(email = data)
             mobile = user.mobile
-            print(mobile)
-            print(data)
-            associated_users = User.objects.filter(Q(email=data))   
-            if associated_users.exists():       
-                for user in associated_users:
-                    subject = "Password Reset Requested"
-                    email_template_name = "accounts/password_reset_email.txt"
-                    mobile  = '+91'+ mobile
-                    obj = Msghandler(mobile,otp)
-                    obj.send_otp()
-                    c = {
-                        "otp":otp
-                    }
-                    email = render_to_string(email_template_name, c)
+
+            # associated_users = User.objects.filter(Q(email=data))   
+            # if associated_users.exists():       
+                # for user in associated_users:
+                    # subject = "Password Reset Requested"
+                    # email_template_name = "accounts/password_reset_email.txt"
+            mobile  = '+91'+ mobile
+            obj = Msghandler(mobile,otp)
+            obj.send_otp()
+            # c = {
+            #     "otp":otp
+            # }
+                    # email = render_to_string(email_template_name, c)
                     # response = fast2sms.requests.request('POST',url=fast2sms.url, data=fast2sms.payload , headers=fast2sms.headers)
-                    print(email,"____________________________________")
+                    # print(email,"____________________________________")
                     # print(response)
-                    try:
-                        send_mail(subject, email, 'admin@example.com' , [user.email], fail_silently=False)
-                    except BadHeaderError:
-                        return HttpResponse('Invalid header found.')
+                    # try:
+                    #     send_mail(subject, email, 'admin@example.com' , [user.email], fail_silently=False)
+                    # except BadHeaderError:
+                    #     return HttpResponse('Invalid header found.')
                     
-                    context ={
-                        "mail":data
-                    }
+                    # context ={
+                    #     "mail":data
+                    # }
                     
-                    return render (request,'accounts/password_reset_done.html', context)
+            return render (request,'accounts/password_reset_done.html')#, context)
     password_reset_form = PasswordResetForm()
     return render(request=request, template_name="accounts/password_reset.html", context={"password_reset_form":password_reset_form})
 
@@ -124,7 +145,7 @@ def resetpassword(request):
         print(global_var)
 
         if myotp == str(global_var):
-            print('######################')
+            
             context ={
                         "mail":data
                     }
@@ -147,3 +168,29 @@ def resetpassword_complete(request):
             
             return render(request,"accounts/password_reset_complete.html")
         return redirect('password_reset_confirm')
+    
+
+def user_list(request):
+    user_list = User.objects.filter(date_joined__lte = '2023-5-15')
+    print(user_list)
+    return HttpResponse('userlist exported ')
+
+from .tasks import export_data_to_excel
+from django.http import HttpResponse
+from openpyxl import load_workbook
+
+def export_view(request):
+    # filepath = f'/home/cis/Truevalue/truevalue/user_list.xlsx'
+    export_data_to_excel.delay() #filepath
+
+
+    # Load the workbook
+    workbook = load_workbook('/xl/workbook.xml/user_list_queryset.xlsx')
+    print('-----------------------')
+    # Get the list of sheet names
+    sheet_names = workbook.sheetnames
+
+    # Print the sheet names
+    for sheet_name in sheet_names:
+        print(sheet_name)
+    return HttpResponse('Export task has been triggered.')

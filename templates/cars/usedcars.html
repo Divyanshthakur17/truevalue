@@ -46,7 +46,7 @@
                                 </select>    
                             </div>
                         </div>
-                        <button class="btn btn-primary"  onmouseover="getvalue()">Find Now</button>
+                        <button class="btn btn-primary" >Find Now</button>
                     </form>
                 </div>
             </div>
@@ -172,13 +172,11 @@
                                         <input type="text" id ="logged_user" value="${data[i].logged_user == 'so' ? 'yes' : 'no'}">
                                         <input type="text" id ="user" value="${data[i].user}">
                                     </div>
-                                    
-                                    <form action="{% url 'add-to-wishlist' %}" method="POST">
+                                    ${data[i].logged_user===data[i].user?"":`<form action="{% url 'add-to-wishlist' %}" method="POST" >
                                         {% csrf_token %}
-                                        <input type="hidden" name="car-id" value="{{car.id}}">
+                                        <input type="hidden" name="car-id" value="${data[i].car_id}">
                                         <button style="background-color: blue; color: azure;"  type="submit">Add to Wishlist</button>
-                                    </form>
-                            
+                                    </form>`}  
                                       
                                 </div>
                             </div>
@@ -190,28 +188,9 @@
             }
         })
     });
+   
 
-    function getvalue(){
-        var user = document.getElementById('user').value;
-        var loguser = document.getElementById('logged_user').value;
-        console.log(user)
-        console.log(loguser)
-        if( user != loguser){
-            document.getElementById("con").innerHTML +=
-            `
-            <form action="{% url 'add-to-wishlist' %}" method="POST">
-                {% csrf_token %}
-                <input type="hidden" name="car-id" value="{{car.id}}">
-                <button style="background-color: blue; color: azure;"  type="submit">Add to Wishlist</button>
-            </form>
-            `
-        }
-    }
-    
-
-    
-
-</script> 
+  </script> 
   <script>
 
     function get(name) {

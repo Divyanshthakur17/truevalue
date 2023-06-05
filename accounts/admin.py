@@ -1,11 +1,13 @@
 from django.contrib import admin
 from image_cropping import ImageCroppingMixin
-from accounts.models import User
+from accounts.models import User, Export
+from import_export.admin import ExportActionMixin
+
 
 # Register your models here.
 # admin.site.register(User)
 
-class UserAdmin(ImageCroppingMixin, admin.ModelAdmin):
+class UserAdmin(ExportActionMixin ,ImageCroppingMixin, admin.ModelAdmin):
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
         ('Personal info', {'fields': ('first_name', 'last_name', 
@@ -14,3 +16,4 @@ class UserAdmin(ImageCroppingMixin, admin.ModelAdmin):
     )
 
 admin.site.register(User, UserAdmin)
+admin.site.register(Export)

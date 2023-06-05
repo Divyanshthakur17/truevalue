@@ -1,0 +1,116 @@
+{% load static %}
+<style>
+  .modal-content {
+    background-color:#fefefe;
+    margin: 30px auto;
+    position: absolute;
+    left: 100%;
+    padding: 20px;
+    width: 300px;
+    height: 300px;
+    animation: slideDown 0.5s;
+    overflow-y: scroll;
+  }
+  @keyframes slideDown {
+    from {
+      margin-top: -300px;
+    }
+    to {
+      margin-top: 0;
+    }
+  }
+</style>
+<div class="modal fade bd-example-modal-sm"  tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true" style="padding-left: 0;padding-right: 0;overflow:auto;">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">notifications</th>
+          </tr>
+        </thead>
+        <tbody id="notification-msg">
+          {% for notification in notifications %}
+          <tr>
+            <td onclick="seenNotification('{{notification.id}}')"><a href="/chat/">You got a message from
+                {{notification.sender.first_name}}.</a></td>
+          </tr>
+          {% endfor %}
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+  function updateNotificationCount() {
+      $.ajax({
+          url: "{% url 'notification_count' %}",
+          type: "GET",
+          success: function(data) {
+            console.log(data)
+            count = data.unread_count
+              // $('#notification-count').empty()
+              console.log(data)
+              
+
+                $('#notification-count').append(
+                  `
+                    <span class="badge" style= "position: absolute;
+                                    top: -10px;
+                                    right: -10px;
+                                    padding: 5px 10px;
+                                    border-radius: 50%;
+                                    background: red;
+                                    color: white;" >
+                    ${count}
+                  </span>
+                  `
+                )
+            $('#notification-msg').empty()
+            msg = data.notifications
+            console.log(msg)
+            for ( i=0;i<msg.length;i++){
+              $('#notification-msg').append(
+               `
+                ${msg[i].is_read === false?
+                 `<tr>
+                 <td onclick="seenNotification('${msg[i].notification_id}')"><a href="/chat/">You got a message from ${msg[i].user_name}
+                 </a></td>
+                </tr>`:`<tr>
+                <td> You got a message from ${msg[i].user_name}</td>
+                </tr>`}
+               `
+              )
+            }
+              
+          },
+          error: function(xhr, status, error) {
+            console.log(error);
+          }
+      });
+  }
+  
+  // Call the updateNotificationCount function initially to display the initial count
+  updateNotificationCount();
+  
+  // Set a time interval to periodically update the notification count
+  setInterval(updateNotificationCount, 5000); // Update every 5 seconds (adjust as needed)
+</script>
+
+<script>
+  function seenNotification(id){
+  debugger
+  console.log(id)
+      $.ajax({
+          type: 'GET',
+          url: '{% url "update_notification" %}',
+          data:
+          {
+              id: id
+          },
+      })
+  }
+</script>

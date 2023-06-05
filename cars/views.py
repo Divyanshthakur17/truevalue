@@ -318,5 +318,90 @@ def load_cities(request):
     return render(request, 'cars/usedcars_model_dropdown.html', {'cities': cities})
 
 
+# API for NewCars Model
+from .serializers import NewCarsSerializer, UsedCarsSerializer
+from rest_framework.viewsets import ViewSet,ModelViewSet
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated, BasePermission
 
 
+
+
+class WriteByAdminOnlyPermission(BasePermission):
+    def has_permission(self, request, view):
+        print('insidnde has permission', request.user)
+        user = request.user
+        if request.method == 'GET':
+            return True
+
+        if request.method == 'POST' or request.method == 'PUT' or request.method == 'DELETE':
+            if user.is_superuser:
+                return True
+
+class UsedCarsViewSets(ModelViewSet):
+    permission_classes = [IsAuthenticated, WriteByAdminOnlyPermission]
+    queryset = UsedCars.objects.all()
+    serializer_class = UsedCarsSerializer
+
+class NewCarsViewSets(ViewSet):
+    permission_classes = [IsAuthenticated, WriteByAdminOnlyPermission]
+    def list(self,request):
+        cars = NewCars.objects.all()
+        serializer = NewCarsSerializer(cars,many= True)
+        return Response(serializer.data)
+    
+    def create(self,request):
+        serializer = NewCarsSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors)
+    
+    def retrieve(self,request,pk):
+        try:
+            car = NewCars.objects.get(pk=pk)
+        except NewCars.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        
+        serializer = NewCarsSerializer(car)
+        return Response(serializer.data)
+    
+    def destroy(self,request,pk = None):
+        try:
+            car = NewCars.objects.get(pk=pk)
+        except NewCars.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        car.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
+
+# class UsedCarsViewSets(ViewSet):
+    def list(self,request):
+        cars = UsedCars.objects.all()
+        serializer = UsedCarsSerializer(cars,many= True)
+        return Response(serializer.data)
+    
+    def create(self,request):
+        serializer = NewCarsSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors)
+    
+    def retrieve(self,request,pk):
+        try:
+            car = NewCars.objects.get(pk=pk)
+        except NewCars.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        
+        serializer = NewCarsSerializer(car)
+        return Response(serializer.data)
+    
+    def destroy(self,request,pk = None):
+        try:
+            car = NewCars.objects.get(pk=pk)
+        except NewCars.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        car.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

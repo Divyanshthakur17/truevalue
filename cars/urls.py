@@ -1,6 +1,7 @@
 from django.urls import path, include
 from . import views
 
+
 urlpatterns = [
     path('newcars/',views.NewCarViews, name='newcars'),
     path('usedcars/',views.UsedCarViews, name='usedcars'),
@@ -13,4 +14,5 @@ urlpatterns = [
     path('addcars/',views.addCars, name = "addcars"),
     path('ajax/load-models/', views.load_models, name='ajax_load_models'),
     path('ajax/load-cities/', views.load_cities, name='ajax_load_cities'),
+    
 ]
