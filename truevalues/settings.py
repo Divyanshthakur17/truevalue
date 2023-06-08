@@ -116,16 +116,14 @@ ASGI_APPLICATION = 'truevalues.asgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'truevalues',
-        'USER': 'root',
-        'PASSWORD': 'root',
+        'NAME': 'django-app-db',
         'HOST': 'db',
         'PORT': '3306',
         # 'NAME': 'truevalues',
         # 'HOST':'127.0.0.1',
         # 'PORT':3306,
         # 'USER':'root',
-        # 'PASSWORD':'root'
+        'PASSWORD':''
     }
 }
 

@@ -10,14 +10,21 @@ services:
     container_name: django_container
     command: python manage.py runserver 0.0.0.0:8000
     depends_on:
-      - db 
+      - db
+      - migration
+
   db:
     image: mysql:8
     environment:
-     MYSQL_DATABASE: truevalues
-     MYSQL_USER: root
-     MYSQL_PASSWORD: root
-     MYSQL_ROOT_PASSWORD: root
+     MYSQL_DATABASE: 'django-app-db'
+     MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
     volumes:
       - ./data/mysql/db:/var/lib/mysql
-
+  
+  migration:
+    image: app:django
+    command: python manage.py migrate --noinput
+    volumes:
+      - .:/code
+    depends_on:
+      - db
