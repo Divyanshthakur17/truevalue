@@ -10,8 +10,8 @@ services:
     container_name: django_container
     command: python manage.py runserver 0.0.0.0:8000
     depends_on:
-      - db
       - migration
+      - db
 
   db:
     image: mysql:8
@@ -23,8 +23,8 @@ services:
   
   migration:
     image: app:django
-    command: python manage.py migrate --noinput
+    command: python manage.py migrate 
     volumes:
-      - .:/code
+      - .:/django
     depends_on:
       - db
