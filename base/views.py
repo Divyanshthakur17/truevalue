@@ -20,7 +20,11 @@ def index(request):
 
     cars = NewCars.objects.all()
     usedcars = UsedCars.objects.all()
-    about = About.objects.get(id=1)
+    try:
+        about = About.objects.get(id=1)
+    except:
+        about = ""
+        
     
     
     if type == "New":
@@ -34,7 +38,13 @@ def index(request):
         if body_type:
             cars = cars.filter(body_type = body_type)
 
-        return render(request,'cars/newcars.html', {"cars":cars,"search":search,"price":price,"Body Type": body_type, 's':s})
+        return render(request,'cars/newcars.html', {
+            "cars":cars,
+            "search":search,
+            "price":price,
+            "Body Type": body_type, 
+            's':s}
+            )
     
     elif type == "Used":
         cars = usedcars
@@ -48,7 +58,12 @@ def index(request):
         if body_type:
             cars = cars.filter(body_type = body_type)
         
-        return render(request,'cars/usedcars.html', {"cars":cars,"search":search,"price":price,"Body Type": body_type})
+        return render(request,'cars/usedcars.html', {
+            "cars":cars,
+            "search":search,
+            "price":price,
+            "Body Type": body_type}
+            )
     else:
         print("---------------")
         context = {
@@ -61,7 +76,10 @@ def index(request):
 
 
 def about(request):
-    about = About.objects.get(id=1)
+    try:
+        about = About.objects.get(id=1)
+    except:
+        about = ''
     return render(request,'base/about.html', {"about":about})
 
 
