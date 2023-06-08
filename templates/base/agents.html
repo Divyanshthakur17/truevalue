@@ -12,6 +12,7 @@
   <div class="spacer agents">
     <div class="row">
       <div class="col-lg-8  col-lg-offset-2 col-sm-12">
+        {% if agents %}
         {% for agent in agents %}
         <div class="row">
           <div class="col-lg-2 col-sm-2" style="padding: 0%;">
@@ -25,6 +26,22 @@
             <span class="glyphicon glyphicon-earphone"></span><a href="tel:{{ agent.agent_phn_no }}">{{agent.agent_phn_no}}</a> </div>
         </div>
         {% endfor %}
+        {% else %}
+        <div style="height: 400px;">
+          <p style="align-items: center; font-size: 2rem;">Here You Can add Your Agents Like this dummy agent</p>
+          <div class="row">
+            <div class="col-lg-2 col-sm-2" style="padding: 0%;">
+              <img  src="static/assets/images/agents/dummy.jpg" class="img-responsive" alt="website template image">
+            </div>
+            <div class="col-lg-7 col-sm-7">
+              <h4>Jonshon</h4>
+              <p>Collaboratively administrate empowered markets via plug-and-play networks. Dynamically procrastinate B2C users after installed base benefits. Dramatically visualize customer directed convergence without revolutionary ROI.</p>
+            </div>
+            <div class="col-lg-3 col-sm-3"><span class="glyphicon glyphicon-envelope"></span> <a href="mailto:{{agent.agent_email}}">abc@gmail.com</a><br>
+              <span class="glyphicon glyphicon-earphone"></span><a href="#">1234567890</a> </div>
+          </div>
+        </div>
+        {% endif %}
       </div>
     </div>
   </div>

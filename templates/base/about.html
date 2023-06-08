@@ -15,13 +15,20 @@
     <div class="row">
       <div class="col-lg-8  col-lg-offset-2"> 
         <div class="mydiv" >
-          <img style=" height: auto; object-fit: cover;"  src="/media/{{about.image}}" class="img-responsive thumbnail" alt="website template image">
+          <img style=" height: auto; object-fit: cover;"  src="/media/{{about.image}}" class="img-responsive thumbnail" alt="upload company image">
         </div>
         
         <h3>Business Background</h3>
+        {% if about %}
         <p>{{about.business_background}}</p>
         <h3>Company Profile</h3>
         <p>{{about.company_profile}}</p>
+        {% else %}
+        <p>You can add business background using admin panel ......</p>
+        <h3>Company Profile</h3>
+        <p>Here add about company profile </p>
+        {% endif %}
+
       </div>
     </div>
   </div>

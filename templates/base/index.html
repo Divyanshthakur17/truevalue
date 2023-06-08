@@ -75,7 +75,7 @@
 </div>
 <div class="banner-search">
   <div class="container">
-    <h3>Buy, Sale &amp; Rent</h3>
+    <h3>Buy &amp; Sale</h3>
     <div class="searchbar">
       <div class="row">
         <div class="col-lg-6 col-sm-6">
@@ -124,7 +124,7 @@
         </div>
         {% else %}
         <div class="col-lg-5 col-lg-offset-1 col-sm-6">
-          <p>Join now and get updated with all the properties deals.</p>
+          <p>Join now and get updated with all the cars deals.</p>
           <button class="btn btn-info" data-toggle="modal" data-target="#loginpop">Login</button>
         </div>
         {% endif %}
@@ -142,6 +142,7 @@
     <h2>Featured New Cars</h2>
     
       <div id="owl-example" class="owl-carousel" >
+        {% if cars %}
         {% for car in cars %}
         <div class="mydiv-main">
           <div class="mydiv-inner">
@@ -156,8 +157,13 @@
               <p class="price">{{car.exshowroom_price}}</p>
               <a class="btn btn-primary" href="{% url 'details' car.id %}">View Details</a>
           </div>
-      </div>
+        </div>
         {% endfor %}
+        {% else %}
+        <div>
+          <p>Here you can show recommended new cars ........</p>
+        </div>
+        {% endif %}
       
     </div>
     
@@ -165,6 +171,7 @@
   <div class="used-cars spacer"><a href="{% url 'usedcars' %}" class="pull-right viewall">View All Listing</a>
     <h2>Featured Used Cars</h2>
     <div id="owl-example-1" class="owl-carousel">
+      {% if usedcars %}
       {% for usedcar in usedcars %}
   
       <div class="mydiv-main">
@@ -180,8 +187,14 @@
             <p class="price">{{usedcar.exshowroom_price}}</p>
             <a class="btn btn-primary" href="{% url 'useddetails' usedcar.id %}">View Details</a>
         </div>
-    </div>
+      </div>
       {% endfor %}
+      {% else %}
+      <div>
+        <p>Here you can show recommended used cars ........</p>
+      </div>
+      {% endif %}
+      
     </div>
   </div>
   <br>
@@ -191,8 +204,13 @@
     <div class="row">
       <div class="col-lg-6 col-sm-9 recent-view">
         <h3>About Us</h3>
+        {% if aboout %}
         <p>{{about.business_background}}<br>
-          <a href="{% url 'about' %}">Learn More</a></p>
+          <a href="{% url 'about' %}">Learn More</a></p> 
+        {% else %}
+        <p>You can add about section and link using admin....<br>
+          <a href="#">Learn More</a>
+        {% endif %}
       </div>
       <div class="col-lg-5 col-lg-offset-1 col-sm-3 recommended">
         <h3>Recommended Properties</h3>
@@ -204,6 +222,7 @@
             <li data-target="#myCarousel" data-slide-to="3"></li>
           </ol>
           <div class="carousel-inner">
+          {% if cars %}
           {% for car in cars|slice:":4" %}
             {% if car.id == 1 %} 
             <div class="item active">
@@ -255,6 +274,9 @@
             </div>
             {% endif %}
           {% endfor %}
+          {% else %}
+          <p>You can add some recommended cars...</p>
+          {% endif %}
           </div>
         </div>
       </div>

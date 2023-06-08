@@ -53,12 +53,12 @@
             console.log(data)
             count = data.unread_count
               // $('#notification-count').empty()
-              console.log(data)
+              console.log(typeof(count))
               
 
                 $('#notification-count').append(
                   `
-                    <span class="badge" style= "position: absolute;
+                  ${count === 0?"":`<span class="badge" style= "position: absolute;
                                     top: -10px;
                                     right: -10px;
                                     padding: 5px 10px;
@@ -66,7 +66,8 @@
                                     background: red;
                                     color: white;" >
                     ${count}
-                  </span>
+                  </span>`}
+                    
                   `
                 )
             $('#notification-msg').empty()
